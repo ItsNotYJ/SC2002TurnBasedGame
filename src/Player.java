@@ -12,13 +12,11 @@ public class Player extends Combatant {
         return this.inventory;
     }
 
-    public Player() { }
-
-    public Player(boolean isTurnSkipped, int skillCooldown, int speed,
-                  int defense, int attack, int maxHP, int currentHP,
-                  PlayerRole selectedRole, ArrayList<Item> inventory) {
-        super(selectedRole.getClassRole(), null, isTurnSkipped,
-                skillCooldown, speed, defense, attack, maxHP, currentHP);
+    // Abstract constructor
+    public Player(PlayerRole selectedRole, ArrayList<Item> inventory) {
+        // When the player first starts the game, initial default state values
+        super(selectedRole.getClassRole(), selectedRole.getSpeed(), selectedRole.getDefense(),
+                selectedRole.getAttack(), selectedRole.getMaxHP());
 
         this.selectedRole = selectedRole;
         this.inventory = inventory;
@@ -33,13 +31,30 @@ public class Player extends Combatant {
 
     }
 
+    // IAction Method Overriding
     @Override
-    public void takeDamage(int damageAmt) {
+    public void execute(Combatant user, Combatant target, BattleEngine engine) {
+
+    }
+
+    // IStatusEffect Method Overriding
+    @Override
+    public void applyEffect(Combatant target) {
 
     }
 
     @Override
-    public void healHP(int healAmt) {
+    public void removeEffect(Combatant target) {
 
+    }
+
+    @Override
+    public int getEffectDuration() {
+        return 0;
+    }
+
+    @Override
+    public boolean isEffectExpired() {
+        return false;
     }
 }

@@ -1,19 +1,6 @@
 import java.util.ArrayList;
 
-interface IStatusEffect {
-    String effectName = null;
-
-    static String getEffectName() {
-        return effectName;
-    }
-
-    static void applyEffect() { }
-    static void removeEffect() { }
-    static void getEffectDuration() { }
-    static void isEffectExpired() { }
-}
-
-public abstract class Combatant {
+public abstract class Combatant implements IStatusEffect, IAction {
     private String combatantName;
     private int currentHP;
     private int maxHP;
@@ -24,18 +11,17 @@ public abstract class Combatant {
     private boolean isTurnSkipped;
     private ArrayList<IStatusEffect> activeEffects;
 
-    public Combatant() { }
+    public Combatant(String combatantName, int speed, int defense, int attack, int maxHP) {
+        this.activeEffects = new ArrayList<IStatusEffect>();
+        this.isTurnSkipped = false;
+        this.skillCooldown = 0;
 
-    public Combatant(String combatantName, ArrayList<IStatusEffect> activeEffects, boolean isTurnSkipped, int skillCooldown, int speed, int defense, int attack, int maxHP, int currentHP) {
         this.combatantName = combatantName;
-        this.activeEffects = activeEffects;
-        this.isTurnSkipped = isTurnSkipped;
-        this.skillCooldown = skillCooldown;
         this.speed = speed;
         this.defense = defense;
         this.attack = attack;
         this.maxHP = maxHP;
-        this.currentHP = currentHP;
+        this.currentHP = maxHP;
     }
 
     public String getCombatantName() {
@@ -74,7 +60,7 @@ public abstract class Combatant {
         this.defense = defense;
     }
 
-    // TODO: Add method code after initializing files, might have to change the argument (Tentative)
+    // TODO: Add method code after initializing files
     public void setStatusEffect(IStatusEffect effectInterface) {
         this.activeEffects.add(null);
     }
@@ -88,9 +74,13 @@ public abstract class Combatant {
 
     }
 
-    public abstract void takeDamage(int damageAmt);
+    public void takeDamage(int damageAmt) {
 
-    public abstract void healHP(int healAmt);
+    }
+
+    public void healHP(int healAmt) {
+
+    }
 
     public boolean isAlive() {
         return currentHP > 0;
