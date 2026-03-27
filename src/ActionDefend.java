@@ -3,6 +3,9 @@ public class ActionDefend implements IAction {
 
     @Override
     public void execute(Combatant user, Combatant target, BattleEngine engine) {
+        System.out.println(user.getCombatantName() + " assumes a defensive stance!");
 
+        //after harini done:
+        //user.setStatusEffect(new EffectDefend())
     }
 }
