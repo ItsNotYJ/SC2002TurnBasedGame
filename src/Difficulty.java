@@ -5,6 +5,8 @@ public abstract class Difficulty {
     public ArrayList<Enemy> enemiesInDifficulty;
     public ArrayList<Enemy> backupEnemies;
 
+    public Difficulty() { }
+
     public String getDifficultyName() {
         return difficultyName;
     }

@@ -3,12 +3,12 @@ public class EffectDefend implements IStatusEffect {
 
     @Override
     public void applyEffect(Combatant target) {
-
+        target.setDefense(target.getDefense() + 10);
     }
 
     @Override
     public void removeEffect(Combatant target) {
-
+        target.setDefense(target.getDefense() - 10);
     }
 
     @Override
