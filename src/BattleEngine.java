@@ -1,39 +1,58 @@
 import java.util.ArrayList;
 
 public class BattleEngine {
-    private final Player player;
-    private final ITurnOrderStrategy currentTurnOrder;
+    private Player player;
+    private ITurnOrderStrategy currentTurnOrder;
     private int roundCounter;
-    private final Difficulty difficulty;
+    private Difficulty difficulty;
     private ArrayList<Combatant> activeCombatants;
     private boolean isBackupSpawned;
 
-    public BattleEngine(Player player, Difficulty difficulty) {
-        ArrayList<Combatant> combatants = new ArrayList<>();
-        combatants.add(player);
-        combatants.addAll(difficulty.getInitialSpawn());
-
-        this.player = player;
+    public BattleEngine() {
         this.currentTurnOrder = new SpeedTurnOrder();
         this.roundCounter = 0;
-        this.activeCombatants = combatants;
-        this.difficulty = difficulty;
+        this.activeCombatants = new ArrayList<Combatant>();
         this.isBackupSpawned = false;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+        activeCombatants.add(player);
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+        activeCombatants.addAll(difficulty.getInitialSpawn());
+    }
+
+    public void setCurrentTurnOrder(ITurnOrderStrategy turnOrderStrategy) { this.currentTurnOrder = turnOrderStrategy; }
+
     public void startGame() {
-        // First we determine the order of combatants based on their speed stat (SpeedTurnOrder)
-        activeCombatants = currentTurnOrder.determineOrder(activeCombatants);
-
-        // Apply any status effects applicable before game starts
-
         // Every do-while loop is a full rotation of combatants (Every round)
         do {
+            // First we determine the order of combatants based on their speed stat (SpeedTurnOrder)
+            activeCombatants = currentTurnOrder.determineOrder(activeCombatants);
+
+            // Apply any applicable active status effect for each combatant at the start
+            for (Combatant c : activeCombatants) {
+                c.updateStatusEffect();
+            }
+
             // Loop through each combatant to execute their turns
             for (Combatant c : activeCombatants) {
-                // Only execute their turn if the combatant is alive
-                if (c.isAlive() && !c.isTurnSkipped())
-                    System.out.println(c.getCombatantName());
+                // First check if combatant's turn is skipped
+                if (c.isTurnSkipped())
+                    continue;
+
+                if (c.isAlive())
+                    // We differentiate between the enemy and player
+                    if (c instanceof Enemy) {
+                        // Object instance of an Enemy
+                        ((Enemy) c).executeTurn(activeCombatants);
+                    } else {
+                        // TODO: Object instance of a Player
+
+                    }
 
                 // We check the game ending condition after each action before moving to the next combatant
                 WinCondition isWin = checkGameEndingCondition();
@@ -42,9 +61,9 @@ public class BattleEngine {
             }
 
             // Print out end of round summary
-            printRoundSummary(roundCounter);
             roundCounter++;
-        } while (checkGameEndingCondition() != WinCondition.WON || checkGameEndingCondition() == WinCondition.LOST);
+            printRoundSummary(roundCounter);
+        } while (checkGameEndingCondition() == WinCondition.UNDETERMINED);
     }
 
     public WinCondition checkGameEndingCondition() {
@@ -81,18 +100,18 @@ public class BattleEngine {
 
             // TODO: Need to test and see ensure added backup enemies only start
             //  their turn the following round (Not the same round)
-
         }
     }
 
     private void printRoundSummary(int currentRound) {
+        System.out.printf("Round %d\n\n", currentRound);
         for (Combatant c : activeCombatants) {
             if (c instanceof Player && c.isAlive()) {
-                System.out.printf("PLAYER: %s, HP: %d", c.getCombatantName(), c.getCurrentHP());
+                System.out.printf("PLAYER: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
             } else if (c instanceof Enemy && c.isAlive()) {
-                System.out.printf("ENEMY: %s, HP: %d", c.getCombatantName(), c.getCurrentHP());
+                System.out.printf("ENEMY: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
             } else {
-                System.out.printf("DEAD: %s", c.getCombatantName());
+                System.out.printf("DEAD: %s\n", c.getCombatantName());
             }
         }
     }
