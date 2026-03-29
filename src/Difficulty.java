@@ -18,6 +18,6 @@ public abstract class Difficulty {
     }
 
     public boolean hasBackupSpawn() {
-        return backupEnemies.isEmpty();
+        return !backupEnemies.isEmpty();
     }
 }
