@@ -104,7 +104,6 @@ public abstract class Combatant implements IStatusEffect, IAction {
         return isTurnSkipped;
     }
 
-    // TODO: Check if there is a different way of implementation for these two methods based on the PDF
     public void decreaseSkillCooldown() {
         skillCooldown--;
     }

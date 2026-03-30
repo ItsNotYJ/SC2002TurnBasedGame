@@ -57,4 +57,7 @@ public class Player extends Combatant {
     public boolean isEffectExpired() {
         return false;
     }
+
+    @Override
+    public void decreaseDuration() { decreaseSkillCooldown(); }
 }

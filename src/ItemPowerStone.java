@@ -4,7 +4,6 @@ public class ItemPowerStone extends Item {
         super("Power Stone");
     }
 
-    // TODO: Add code
     @Override
     public void useItem(Combatant user, Combatant target, BattleEngine engine) {
         System.out.println(user.getCombatantName() + " crushes the Power Stone! It glows with intense energy...");
@@ -16,7 +15,7 @@ public class ItemPowerStone extends Item {
             player.useSpecialSkill(target, engine);
 
             // immediately set the cooldown back to 0
-            player.resetCooldown();
+            player.resetSkillCooldown();
 
             System.out.println("The Power Stone shatters, leaving no cooldown!");
         } else {
