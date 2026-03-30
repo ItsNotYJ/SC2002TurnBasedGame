@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class DifficultyHard extends Difficulty {
     public DifficultyHard() {
-        this.difficultyName = "Medium";
+        this.difficultyName = "Hard";
 
         ArrayList<Enemy> enemies = new ArrayList<Enemy>();
         enemies.add(new EnemyGoblin());

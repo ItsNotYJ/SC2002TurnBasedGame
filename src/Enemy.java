@@ -9,12 +9,12 @@ public class Enemy extends Combatant {
         this.strategy = strategy;
     }
 
-    public IAction executeTurn(ArrayList<Combatant> combatants) {
-        return this.strategy.executeAction(this, combatants);
+    public void executeTurn(ArrayList<Combatant> combatants) {
+        strategy.executeAction(this, combatants);
     }
 
     @Override
-    public void execute(Combatant user, Combatant target, BattleEngine engine) {
+    public void executeTurn(Combatant user, Combatant target, BattleEngine engine) {
 
     }
 
