@@ -3,4 +3,5 @@ public interface IStatusEffect {
     void removeEffect(Combatant target);
     int getEffectDuration();
     boolean isEffectExpired();
+    void decreaseDuration();
 }

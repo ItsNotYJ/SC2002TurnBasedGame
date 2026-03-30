@@ -1,25 +1,28 @@
 public class EffectDefend implements IStatusEffect {
-    public EffectDefend() { }
+    private int duration = 2;
 
     @Override
     public void applyEffect(Combatant target) {
-        if (isEffectExpired())
-            target.setDefense(target.getDefense() + 10);
+        target.setDefense(target.getDefense() + 10);
+        System.out.println(target.getCombatantName() + " braces for impact! Defense increased by 10.");
     }
 
     @Override
     public void removeEffect(Combatant target) {
-        if (!isEffectExpired())
-            target.setDefense(target.getDefense() - 10);
+        target.setDefense(target.getDefense() - 10);
+        System.out.println(target.getCombatantName() + "'s defensive stance ends.");
     }
 
     @Override
+    public void decreaseDuration() { duration--; }
+
+    @Override
     public int getEffectDuration() {
-        return 2;
+        return duration;
     }
 
     @Override
     public boolean isEffectExpired() {
-        return getEffectDuration() == 0;
+        return duration <= 0;
     }
 }
