@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public abstract class Combatant implements IStatusEffect, IAction {
-    private String combatantName;
+    private final String combatantName;
     private int currentHP;
     private int maxHP;
     private int attack;
@@ -12,7 +12,7 @@ public abstract class Combatant implements IStatusEffect, IAction {
     private ArrayList<IStatusEffect> activeEffects;
 
     public Combatant(String combatantName, int speed, int defense, int attack, int maxHP) {
-        this.activeEffects = new ArrayList<IStatusEffect>();
+        this.activeEffects = new ArrayList<>();
         this.isTurnSkipped = false;
         this.skillCooldown = 0;
 
@@ -27,6 +27,8 @@ public abstract class Combatant implements IStatusEffect, IAction {
     public String getCombatantName() {
         return combatantName;
     }
+
+    public ArrayList<IStatusEffect> getActiveEffects() { return activeEffects; }
 
     public int getCurrentHP() {
         return currentHP;
@@ -60,26 +62,38 @@ public abstract class Combatant implements IStatusEffect, IAction {
         this.defense = defense;
     }
 
-    // TODO: Add method code after initializing files
-    public void setStatusEffect(IStatusEffect effectInterface) {
-        this.activeEffects.add(null);
+    public void setStatusEffect(IStatusEffect effect) {
+        activeEffects.add(effect);
     }
 
     public void setSkipTurn(boolean skipped) {
-        this.isTurnSkipped = skipped;
+        isTurnSkipped = skipped;
     }
 
-    // TODO: Add method code after initializing files
+    // We apply each activeEffect to the combatant
     public void updateStatusEffect() {
-
+        java.util.Iterator<IStatusEffect> iterator = activeEffects.iterator();
+        while (iterator.hasNext()) {
+            IStatusEffect e = iterator.next();
+            if (!e.isEffectExpired()) {
+                e.applyEffect(this);
+            } else {
+                iterator.remove();
+            }
+        }
     }
 
     public void takeDamage(int damageAmt) {
-
+        // To ensure that the HP will always be 0 and above using the Math.max method
+        int effectiveDmg = Math.max(0, damageAmt);
+        currentHP = Math.max(0, currentHP - effectiveDmg);
     }
 
     public void healHP(int healAmt) {
-
+        if (currentHP + healAmt > maxHP)
+            currentHP = maxHP;
+        else
+            currentHP += healAmt;
     }
 
     public boolean isAlive() {
@@ -90,12 +104,12 @@ public abstract class Combatant implements IStatusEffect, IAction {
         return isTurnSkipped;
     }
 
-    // TODO: Both cooldown methods from interface?
-    public void decreaseCooldown() {
-
+    // TODO: Check if there is a different way of implementation for these two methods based on the PDF
+    public void decreaseSkillCooldown() {
+        skillCooldown--;
     }
 
-    public void resetCooldown() {
-
+    public void resetSkillCooldown() {
+        skillCooldown = 0;
     }
 }

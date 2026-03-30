@@ -6,7 +6,7 @@ public class ActionItemUse implements IAction {
     }
 
     @Override
-    public void execute(Combatant user, Combatant target, BattleEngine engine) {
+    public void executeTurn(Combatant user, Combatant target, BattleEngine engine) {
 
     }
 }
