@@ -3,12 +3,14 @@ public class EffectDefend implements IStatusEffect {
 
     @Override
     public void applyEffect(Combatant target) {
-        target.setDefense(target.getDefense() + 10);
+        if (isEffectExpired())
+            target.setDefense(target.getDefense() + 10);
     }
 
     @Override
     public void removeEffect(Combatant target) {
-        target.setDefense(target.getDefense() - 10);
+        if (!isEffectExpired())
+            target.setDefense(target.getDefense() - 10);
     }
 
     @Override
@@ -18,6 +20,6 @@ public class EffectDefend implements IStatusEffect {
 
     @Override
     public boolean isEffectExpired() {
-        return false;
+        return getEffectDuration() == 0;
     }
 }

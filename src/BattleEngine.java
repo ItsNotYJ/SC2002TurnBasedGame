@@ -28,6 +28,11 @@ public class BattleEngine {
     public void setCurrentTurnOrder(ITurnOrderStrategy turnOrderStrategy) { this.currentTurnOrder = turnOrderStrategy; }
 
     public void startGame() {
+        if (player == null) {
+            System.out.println("ERROR! Player is not set and returned null!");
+            return;
+        }
+
         // Every do-while loop is a full rotation of combatants (Every round)
         do {
             // First we determine the order of combatants based on their speed stat (SpeedTurnOrder)
@@ -67,6 +72,11 @@ public class BattleEngine {
     }
 
     public WinCondition checkGameEndingCondition() {
+        if (player == null) {
+            System.out.println("ERROR! Player is not set and returned null!");
+            return WinCondition.UNDETERMINED;
+        }
+
         // We do an immediate check to see if the player is still alive else the player has lost
         if (!player.isAlive())
             return WinCondition.LOST;
@@ -78,6 +88,11 @@ public class BattleEngine {
         }
 
         // Else, if all enemies are dead and player is alive return won
+        if (difficulty.hasBackupSpawn()) {
+            checkIfBackupSpawn();
+            return  WinCondition.UNDETERMINED;
+        }
+
         return WinCondition.WON;
     }
 

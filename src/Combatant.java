@@ -72,18 +72,21 @@ public abstract class Combatant implements IStatusEffect, IAction {
 
     // We apply each activeEffect to the combatant
     public void updateStatusEffect() {
-        for (IStatusEffect e : activeEffects) {
+        java.util.Iterator<IStatusEffect> iterator = activeEffects.iterator();
+        while (iterator.hasNext()) {
+            IStatusEffect e = iterator.next();
             if (!e.isEffectExpired()) {
                 e.applyEffect(this);
             } else {
-                activeEffects.remove(e);
+                iterator.remove();
             }
         }
     }
 
     public void takeDamage(int damageAmt) {
         // To ensure that the HP will always be 0 and above using the Math.max method
-        currentHP = Math.max(0, currentHP - damageAmt);
+        int effectiveDmg = Math.max(0, damageAmt);
+        currentHP = Math.max(0, currentHP - effectiveDmg);
     }
 
     public void healHP(int healAmt) {
