@@ -33,7 +33,7 @@ public class Player extends Combatant {
 
     // IAction Method Overriding
     @Override
-    public void execute(Combatant user, Combatant target, BattleEngine engine) {
+    public void executeTurn(Combatant user, Combatant target, BattleEngine engine) {
 
     }
 

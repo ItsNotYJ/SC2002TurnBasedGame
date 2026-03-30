@@ -9,5 +9,3 @@ public class ActionBasicAttack implements IAction {
         System.out.println(user.getCombatantName() + " used Basic Attack on " + target.getCombatantName() + " for " + damage + " damage!");
     }
 }
-
-
