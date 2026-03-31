@@ -60,26 +60,40 @@ public abstract class Combatant implements IStatusEffect, IAction {
         this.defense = defense;
     }
 
-    // TODO: Add method code after initializing files
     public void setStatusEffect(IStatusEffect effectInterface) {
-        this.activeEffects.add(null);
+        this.activeEffects.add(effectInterface);
+        effectInterface.applyEffect(this);
     }
 
     public void setSkipTurn(boolean skipped) {
         this.isTurnSkipped = skipped;
     }
 
-    // TODO: Add method code after initializing files
     public void updateStatusEffect() {
+    ArrayList<IStatusEffect> toRemove = new ArrayList<>();
 
+    for (IStatusEffect effect : activeEffects) {
+        if (effect.isEffectExpired()) {
+            effect.removeEffect(this);
+            toRemove.add(effect);
+        }
+    }
+
+    activeEffects.removeAll(toRemove);
     }
 
     public void takeDamage(int damageAmt) {
-
+        this.currentHP -= damageAmt;
+        if (this.currentHP < 0) {
+            this.currentHP = 0;
+    }
     }
 
     public void healHP(int healAmt) {
-
+        this.currentHP += healAmt;
+        if (this.currentHP > this.maxHP) {
+            this.currentHP = this.maxHP;
+        }
     }
 
     public boolean isAlive() {
@@ -90,12 +104,13 @@ public abstract class Combatant implements IStatusEffect, IAction {
         return isTurnSkipped;
     }
 
-    // TODO: Both cooldown methods from interface?
     public void decreaseCooldown() {
-
+        if (this.skillCooldown > 0) {
+            this.skillCooldown--;
+    }
     }
 
     public void resetCooldown() {
-
+        this.skillCooldown = 3; //putting 3 rn
     }
 }

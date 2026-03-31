@@ -5,7 +5,11 @@ public class EnemyBasicAttack implements IEnemyStrategy {
 
     @Override
     public IAction executeAction(Enemy self, ArrayList<Combatant> combatants) {
-        // TODO: Update the logic of the enemy basic attack here to attack the player found in the Combatants list
-        return null;
+        for (Combatant c : combatants) {
+            if (c instanceof Player && c.isAlive()) {
+                return new ActionBasicAttack(self, c);
+            }
+        }
+        return null; // fallback 
     }
 }
