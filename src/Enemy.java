@@ -19,14 +19,10 @@ public class Enemy extends Combatant {
     public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) { return null; }
 
     @Override
-    public void applyEffect(Combatant target) {
-
-    }
+    public void applyEffect(Combatant target) { }
 
     @Override
-    public void removeEffect(Combatant target) {
-
-    }
+    public void removeEffect(Combatant target) { }
 
     @Override
     public int getEffectDuration() {
@@ -39,7 +35,5 @@ public class Enemy extends Combatant {
     }
 
     @Override
-    public void decreaseDuration() {
-
-    }
+    public void decreaseDuration() { }
 }

@@ -24,9 +24,4 @@ public class EnemyBasicAttack implements IEnemyStrategy {
             }
         }
     }
-
-    @Override
-    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
-        return null;
-    }
 }

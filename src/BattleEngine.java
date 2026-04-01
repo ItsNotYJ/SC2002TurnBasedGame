@@ -15,6 +15,10 @@ public class BattleEngine {
         this.isBackupSpawned = false;
     }
 
+    public ArrayList<Combatant> getActiveCombatants() {
+        return activeCombatants;
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
         activeCombatants.add(player);
@@ -55,7 +59,7 @@ public class BattleEngine {
                         // Object instance of an Enemy
                         e.performTurn(activeCombatants);
                     } else {
-                        // TODO: Object instance of a Player
+                        // TODO: User Input and Object instance of a Player
 
                     }
 
