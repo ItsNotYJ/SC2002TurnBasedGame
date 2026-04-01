@@ -1,5 +1,7 @@
 public class MainApp {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        UserInterface display = new UserInterface();
+
+        display.initGame();
     }
 }
