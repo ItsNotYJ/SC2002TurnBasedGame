@@ -10,12 +10,8 @@ public class ItemPowerStone extends Item {
 
         // checking to make sure the user is a Player
         if (user instanceof Player player) {
-
             // force the player to use their special skill
-            player.useSpecialSkill(target, engine);
-
-            // immediately set the cooldown back to 0
-            player.resetCooldown();
+            player.triggerSpecialSkill(target, engine);
 
             System.out.println("The Power Stone shatters, leaving no cooldown!");
         } else {

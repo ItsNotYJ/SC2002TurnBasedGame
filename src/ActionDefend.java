@@ -3,6 +3,8 @@ public class ActionDefend implements IAction {
 
     @Override
     public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
-        return new ActionDefend();
+        // If the player chooses to defend for his action, we create a new status effect for the player
+        user.setStatusEffect(new EffectDefend());
+        return this;
     }
 }

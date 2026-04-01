@@ -63,7 +63,7 @@ public abstract class Combatant implements IStatusEffect, IAction {
     }
 
     public void setStatusEffect(IStatusEffect effectInterface) {
-        this.activeEffects.add(effectInterface);
+        activeEffects.add(effectInterface);
         effectInterface.applyEffect(this);
     }
 
@@ -72,29 +72,32 @@ public abstract class Combatant implements IStatusEffect, IAction {
     }
 
     public void updateStatusEffect() {
-    ArrayList<IStatusEffect> toRemove = new ArrayList<>();
+        ArrayList<IStatusEffect> toRemove = new ArrayList<>();
 
-    for (IStatusEffect effect : activeEffects) {
-        if (effect.isEffectExpired()) {
-            effect.removeEffect(this);
-            toRemove.add(effect);
+        for (IStatusEffect effect : activeEffects) {
+            // If the effect has yet to expire, we decrease the duration by 1
+            effect.decreaseDuration();
+
+            if (effect.isEffectExpired()) {
+                effect.removeEffect(this);
+                toRemove.add(effect);
+            }
         }
-    }
 
-    activeEffects.removeAll(toRemove);
+        activeEffects.removeAll(toRemove);
     }
 
     public void takeDamage(int damageAmt) {
-        this.currentHP -= damageAmt;
-        if (this.currentHP < 0) {
-            this.currentHP = 0;
+        currentHP -= damageAmt;
+        if (currentHP < 0) {
+            currentHP = 0;
     }
     }
 
     public void healHP(int healAmt) {
-        this.currentHP += healAmt;
-        if (this.currentHP > this.maxHP) {
-            this.currentHP = this.maxHP;
+        currentHP += healAmt;
+        if (currentHP > maxHP) {
+            currentHP = maxHP;
         }
     }
 
@@ -107,12 +110,11 @@ public abstract class Combatant implements IStatusEffect, IAction {
     }
 
     public void decreaseCooldown() {
-        if (this.skillCooldown > 0) {
-            this.skillCooldown--;
-      }
+        if (skillCooldown > 0)
+            skillCooldown--;
     }
 
     public void resetCooldown() {
-        this.skillCooldown = 3; //putting 3 rn
+        skillCooldown = 3; //putting 3 rn
     }
 }

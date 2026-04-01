@@ -1,22 +1,13 @@
 public class ActionBasicAttack implements IAction {
-
-    private Combatant user;
-    private Combatant target;
-
-    public ActionBasicAttack(Combatant user, Combatant target) {
-        this.user = user;
-        this.target = target;
-    }
-
     @Override
     public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
-        int damage = this.user.getAttack() - this.target.getDefense();
+        int effectiveDamage = user.getAttack() - target.getDefense();
 
-        if (damage < 0) {
-            damage = 0;
+        if (effectiveDamage < 0) {
+            effectiveDamage = 0;
         }
 
-        this.target.takeDamage(damage);
-        return new ActionBasicAttack(user, target);
+        target.takeDamage(effectiveDamage);
+        return this;
     }
 }

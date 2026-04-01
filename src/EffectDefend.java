@@ -3,6 +3,13 @@ public class EffectDefend implements IStatusEffect {
 
     @Override
     public void applyEffect(Combatant target) {
+        for (IStatusEffect e : target.getActiveEffects()) {
+            if (e instanceof EffectDefend) {
+                System.out.println("You already have a defend status active!");
+                return;
+            }
+        }
+
         target.setDefense(target.getDefense() + 10);
         System.out.println(target.getCombatantName() + " braces for impact! Defense increased by 10.");
     }

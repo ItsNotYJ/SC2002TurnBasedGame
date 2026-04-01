@@ -26,6 +26,11 @@ public class Player extends Combatant {
         inventory.remove(item); // Might wanna test this if it works
     }
 
+    // Mainly to use for the Power Stone item
+    public void triggerSpecialSkill(Combatant target, BattleEngine engine) {
+        this.selectedRole.doSpecialSkill(this, target, engine);
+    }
+
     public void useSpecialSkill(Combatant enemy, BattleEngine engine) {
         if (this.getSkillCooldown() == 0) {
             this.selectedRole.doSpecialSkill(this, enemy, engine);

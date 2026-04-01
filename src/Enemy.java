@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Enemy extends Combatant {
     private IEnemyStrategy strategy;
 
@@ -8,10 +10,13 @@ public class Enemy extends Combatant {
         this.strategy = new EnemyBasicAttack();
     }
 
-    @Override
-    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
-        return null;
+    public void performTurn(ArrayList<Combatant> combatants) {
+        strategy.executeTurn(this, combatants);
     }
+
+    // No override required as method is not utilized
+    @Override
+    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) { return null; }
 
     @Override
     public void applyEffect(Combatant target) {

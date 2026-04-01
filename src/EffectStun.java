@@ -5,6 +5,7 @@ public class EffectStun implements IStatusEffect {
     public void applyEffect(Combatant target) {
         // force the target to skip their turn
         target.setSkipTurn(true);
+
         System.out.println(target.getCombatantName() + " is stunned and cannot move!");
     }
 

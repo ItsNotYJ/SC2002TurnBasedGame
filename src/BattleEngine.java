@@ -51,9 +51,9 @@ public class BattleEngine {
 
                 if (c.isAlive())
                     // We differentiate between the enemy and player
-                    if (c instanceof Enemy) {
+                    if (c instanceof Enemy e) {
                         // Object instance of an Enemy
-
+                        e.performTurn(activeCombatants);
                     } else {
                         // TODO: Object instance of a Player
 
@@ -64,6 +64,9 @@ public class BattleEngine {
                 if (isWin == WinCondition.WON || isWin == WinCondition.LOST)
                     break;
             }
+
+            // We check if there is a need to spawn the backup enemies
+            checkIfBackupSpawn();
 
             // Print out end of round summary
             roundCounter++;
@@ -87,12 +90,6 @@ public class BattleEngine {
                 return WinCondition.UNDETERMINED;
         }
 
-        // Else, if all enemies are dead and player is alive return won
-        if (difficulty.hasBackupSpawn()) {
-            checkIfBackupSpawn();
-            return  WinCondition.UNDETERMINED;
-        }
-
         return WinCondition.WON;
     }
 
@@ -112,9 +109,6 @@ public class BattleEngine {
             activeCombatants.addAll(difficulty.getBackupSpawn());
 
             isBackupSpawned = true;
-
-            // TODO: Need to test and see ensure added backup enemies only start
-            //  their turn the following round (Not the same round)
         }
     }
 
