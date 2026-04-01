@@ -11,7 +11,7 @@ public class WizardRole extends PlayerRole {
             if (c instanceof Enemy e && e.isAlive()) {
                 int effectiveDamage = Math.max(0, player.getAttack() - e.getDefense());
                 e.takeDamage(effectiveDamage);
-                System.out.println("Arcane Blast hits " + enemy.getCombatantName() + " for " + damage + " damage!");
+                System.out.println("Arcane Blast hits " + enemy.getCombatantName() + " for " + effectiveDamage + " damage!");
 
 
                 // If the wizard kills an enemy using his special skill, we add 10 attack to his stats permanantly

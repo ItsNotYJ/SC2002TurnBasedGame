@@ -15,18 +15,27 @@ public class UserInterface {
         WarriorRole displayWarrior = new WarriorRole();
         WizardRole displayWizard = new WizardRole();
 
+        System.out.println("========================================");
+        System.out.println("       TURN-BASED COMBAT ARENA");
+        System.out.println("========================================");
         System.out.println("Welcome to the game! Press <Enter> to start!");
         sc.nextLine();
 
-        System.out.println("Initializing...\n");
+        System.out.println("Loading Game...\n");
 
-        System.out.println("Player Setup:");
-        System.out.printf("1. Warrior | Attack: %d | Health: %d | Defense: %d | Speed: %d\n",
-                displayWarrior.getAttack(), displayWarrior.getMaxHP(),
+        // 1. Role Selection
+        System.out.println("--- SELECT YOUR ROLE ---");
+        System.out.println("1. Warrior");
+        System.out.printf("   Attributes: HP: %d | Attack: %d | Defense: %d | Speed: %d\n",
+                displayWarrior.getMaxHP(), displayWarrior.getAttack(),
                 displayWarrior.getDefense(), displayWarrior.getSpeed());
-        System.out.printf("2. Wizard | Attack: %d | Health: %d | Defense: %d | Speed: %d\n",
-                displayWizard.getAttack(), displayWizard.getMaxHP(),
+        System.out.println("   Special Skill: Shield Bash (Stuns enemy for 2 turns)");
+
+        System.out.println("2. Wizard");
+        System.out.printf("   Attributes: HP: %d | Attack: %d | Defense: %d | Speed: %d\n",
+                displayWizard.getMaxHP(), displayWizard.getAttack(),
                 displayWizard.getDefense(), displayWizard.getSpeed());
+        System.out.println("   Special Skill: Arcane Blast (+10 Attack per kill)");
 
         // Initialize the player selection for player role (Wizard / Warrior)
         int roleSelect = 0;
@@ -54,13 +63,12 @@ public class UserInterface {
             // We exit the do-while loop once the user chooses 1 / 2 for the player role
         } while (roleSelect != 1 && roleSelect != 2);
 
-        System.out.println();
-
         // Initialize the player selection for inventory items (2 items, can allow duplicates)
-        System.out.println("Inventory Setup:");
-        System.out.println("1. Potion - Heals 100HP");
-        System.out.println("2. Power Stone - Free extra use of special skill");
-        System.out.println("3. Smoke Bomb - Enemy deals 0 damage this turn and the following turn");
+        // 2. Item Selection
+        System.out.println("\n--- SELECT YOUR ITEMS (Choose 2, duplicates allowed) ---");
+        System.out.println("1. Potion (Heal 100 HP)");
+        System.out.println("2. Power Stone (Free use of Special Skill without cooldown)");
+        System.out.println("3. Smoke Bomb (Enemy attacks deal 0 damage for 2 turns)");
         ArrayList<Item> selectedItems = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             int itemSelect = 0;
@@ -97,15 +105,20 @@ public class UserInterface {
         }
 
         // We initialize the game difficulty here
-        System.out.println("Game Difficulty:");
-        System.out.println("1. Easy");
-        System.out.println("2. Medium");
-        System.out.println("3. Difficult");
+        // 3. Difficulty Selection
+        System.out.println("--- SELECT DIFFICULTY ---");
+        System.out.println("1. Easy (3 Goblins)");
+        System.out.println("2. Medium (1 Goblin, 1 Wolf | Backup: 2 Wolves)");
+        System.out.println("3. Hard (2 Goblins | Backup: 1 Goblin, 2 Wolves)");
+
+        System.out.println("\nEnemy Stats:");
+        System.out.println("- Goblin: HP: 55 | Attack: 35 | Defense: 15 | Speed: 25");
+        System.out.println("- Wolf: HP: 40 | Attack: 45 | Defense: 5 | Speed: 35");
 
         // Initialize the player selection for player role (Wizard / Warrior)
         int diffSelect = 0;
         do {
-            System.out.print("Select your role: ");
+            System.out.print("Select your difficulty: ");
             while (!sc.hasNextInt()) {
                 System.out.println("Invalid selection. Please try again!");
                 sc.next();
@@ -155,7 +168,7 @@ public class UserInterface {
     }
 
     public void displayIfGameEnd(boolean didPlayerWin) {
-
+        
     }
 
     public IAction inputPlayerAction(Player player) {
