@@ -7,8 +7,14 @@ public class WarriorRole extends PlayerRole {
 
     @Override
     public void doSpecialSkill(Player player, Combatant enemy, BattleEngine engine) {
-        int effectiveDamage = Math.max(0, player.getAttack() - enemy.getDefense());
-        enemy.takeDamage(effectiveDamage);
+        // deal basic attack damage
+        int damage = Math.max(0, player.getAttack() - enemy.getDefense());
+        enemy.takeDamage(damage);
+        System.out.println("Warrior uses Shield Bash on " + enemy.getCombatantName() + " for " + damage + " damage!");
+
         enemy.setStatusEffect(new EffectStun());
+
+        System.out.println(enemy.getCombatantName() + " is stunned!");
+
     }
 }

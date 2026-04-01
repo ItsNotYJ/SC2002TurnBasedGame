@@ -3,7 +3,8 @@ public class ActionDefend implements IAction {
 
     @Override
     public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
-        // If the player chooses to defend for his action, we create a new status effect for the player
+        System.out.println(user.getCombatantName() + " assumes a defensive stance!");
+
         user.setStatusEffect(new EffectDefend());
         return this;
     }
