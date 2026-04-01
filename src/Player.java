@@ -35,8 +35,8 @@ public class Player extends Combatant {
 
     // IAction Method Overriding
     @Override
-    public void executeTurn(Combatant user, Combatant target, BattleEngine engine) {
-
+    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
+        return null;
     }
 
     // IStatusEffect Method Overriding
@@ -61,5 +61,5 @@ public class Player extends Combatant {
     }
 
     @Override
-    public void decreaseDuration() { decreaseSkillCooldown(); }
+    public void decreaseDuration() { decreaseCooldown(); }
 }

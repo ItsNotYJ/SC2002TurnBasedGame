@@ -15,11 +15,13 @@ public class ActionItemUse implements IAction {
     }
 
     @Override
-    public void execute(Combatant user, Combatant target, BattleEngine engine) {// takes the engines execute command and passes it to item
+    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {// takes the engines execute command and passes it to item
         if (usingItem != null) {
             usingItem.useItem(user, target, engine);
         } else {
             System.out.println("No item was selected!");
         }
+        
+        return new ActionItemUse(usingItem);
     }
 }

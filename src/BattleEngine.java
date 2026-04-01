@@ -53,7 +53,7 @@ public class BattleEngine {
                     // We differentiate between the enemy and player
                     if (c instanceof Enemy) {
                         // Object instance of an Enemy
-                        ((Enemy) c).executeTurn(activeCombatants);
+
                     } else {
                         // TODO: Object instance of a Player
 

@@ -1,21 +1,16 @@
-import java.util.ArrayList;
-
 public class Enemy extends Combatant {
     private IEnemyStrategy strategy;
 
-    public Enemy(String name, int attack, int defense, int speed, int maxHP, IEnemyStrategy strategy) {
+    public Enemy(String name, int attack, int defense, int speed, int maxHP) {
         super(name, speed, defense, attack, maxHP);
 
-        this.strategy = strategy;
-    }
-
-    public void executeTurn(ArrayList<Combatant> combatants) {
-        strategy.executeAction(this, combatants);
+        // As of this iteration of the game, the enemy only has a basic attack action
+        this.strategy = new EnemyBasicAttack();
     }
 
     @Override
-    public void executeTurn(Combatant user, Combatant target, BattleEngine engine) {
-
+    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
+        return null;
     }
 
     @Override
@@ -36,5 +31,10 @@ public class Enemy extends Combatant {
     @Override
     public boolean isEffectExpired() {
         return false;
+    }
+
+    @Override
+    public void decreaseDuration() {
+
     }
 }

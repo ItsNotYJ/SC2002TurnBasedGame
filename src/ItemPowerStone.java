@@ -15,7 +15,7 @@ public class ItemPowerStone extends Item {
             player.useSpecialSkill(target, engine);
 
             // immediately set the cooldown back to 0
-            player.resetSkillCooldown();
+            player.resetCooldown();
 
             System.out.println("The Power Stone shatters, leaving no cooldown!");
         } else {

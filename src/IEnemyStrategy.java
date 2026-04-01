@@ -1,5 +1,5 @@
 import java.util.ArrayList;
 
-public interface IEnemyStrategy {
-    void executeAction(Enemy self, ArrayList<Combatant> combatants);
+public interface IEnemyStrategy extends IAction {
+    IAction executeTurn(Enemy self, ArrayList<Combatant> combatants);
 }

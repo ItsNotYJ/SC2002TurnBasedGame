@@ -9,7 +9,7 @@ public class ActionBasicAttack implements IAction {
     }
 
     @Override
-    public void execute(Combatant user, Combatant target, BattleEngine engine) {
+    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
         int damage = this.user.getAttack() - this.target.getDefense();
 
         if (damage < 0) {
@@ -17,5 +17,6 @@ public class ActionBasicAttack implements IAction {
         }
 
         this.target.takeDamage(damage);
+        return new ActionBasicAttack(user, target);
     }
 }
