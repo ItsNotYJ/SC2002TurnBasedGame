@@ -5,6 +5,8 @@ public abstract class Difficulty {
     public ArrayList<Enemy> enemiesInDifficulty;
     public ArrayList<Enemy> backupEnemies;
 
+    public Difficulty() { }
+
     public String getDifficultyName() {
         return difficultyName;
     }
@@ -18,6 +20,6 @@ public abstract class Difficulty {
     }
 
     public boolean hasBackupSpawn() {
-        return backupEnemies.isEmpty();
+        return !backupEnemies.isEmpty();
     }
 }

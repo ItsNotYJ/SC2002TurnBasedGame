@@ -1,23 +1,27 @@
 public class EffectArcaneBlast implements IStatusEffect {
-    public EffectArcaneBlast() { }
+    private int duration = 99999;
 
     @Override
     public void applyEffect(Combatant target) {
-
+        target.setAttack(target.getAttack() + 10);
+        System.out.println(target.getCombatantName() + " surges with arcane energy! Attack boosted by 10.");
     }
 
     @Override
     public void removeEffect(Combatant target) {
-
+        target.setAttack(target.getAttack() - 10);
     }
 
     @Override
+    public void decreaseDuration() { duration--; }
+
+    @Override
     public int getEffectDuration() {
-        return 99999;
+        return duration;
     }
 
     @Override
     public boolean isEffectExpired() {
-        return false;
+        return duration <= 0;
     }
 }

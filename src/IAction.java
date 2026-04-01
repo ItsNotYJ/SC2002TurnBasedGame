@@ -1,4 +1,3 @@
 public interface IAction {
-    void execute(Combatant user, Combatant target, BattleEngine engine);
+    IAction executeTurn(Combatant user, Combatant target, BattleEngine engine);
 }
-

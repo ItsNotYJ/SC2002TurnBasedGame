@@ -3,30 +3,26 @@ import java.util.ArrayList;
 public class Enemy extends Combatant {
     private IEnemyStrategy strategy;
 
-    public Enemy(String name, int attack, int defense, int speed, int maxHP, IEnemyStrategy strategy) {
+    public Enemy(String name, int attack, int defense, int speed, int maxHP) {
         super(name, speed, defense, attack, maxHP);
 
-        this.strategy = strategy;
+        // As of this iteration of the game, the enemy only has a basic attack action
+        this.strategy = new EnemyBasicAttack();
     }
 
-    public IAction executeTurn(ArrayList<Combatant> combatants) {
-        return this.strategy.executeAction(this, combatants);
+    public void performTurn(ArrayList<Combatant> combatants) {
+        strategy.executeTurn(this, combatants);
     }
+
+    // No override required as method is not utilized
+    @Override
+    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) { return null; }
 
     @Override
-    public void execute(Combatant user, Combatant target, BattleEngine engine) {
-
-    }
+    public void applyEffect(Combatant target) { }
 
     @Override
-    public void applyEffect(Combatant target) {
-
-    }
-
-    @Override
-    public void removeEffect(Combatant target) {
-
-    }
+    public void removeEffect(Combatant target) { }
 
     @Override
     public int getEffectDuration() {
@@ -37,4 +33,7 @@ public class Enemy extends Combatant {
     public boolean isEffectExpired() {
         return false;
     }
+
+    @Override
+    public void decreaseDuration() { }
 }

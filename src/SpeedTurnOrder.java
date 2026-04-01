@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class SpeedTurnOrder implements ITurnOrderStrategy {
-    // TODO: Sort and return the arrayList of combatants based on their speed stat
+    public SpeedTurnOrder() { }
+
+    // We sort the combatants list based on their speed stat
     @Override
     public ArrayList<Combatant> determineOrder(ArrayList<Combatant> combatants) {
         // Create a copy to avoid modifying the original list reference directly during sorting
