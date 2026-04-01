@@ -14,5 +14,6 @@ public class DifficultyMedium extends Difficulty {
         backupEnemies.add(new EnemyWolf());
         backupEnemies.add(new EnemyWolf());
         this.backupEnemies = backupEnemies;
+        System.out.print("");
     }
 }
