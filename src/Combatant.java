@@ -62,38 +62,43 @@ public abstract class Combatant implements IStatusEffect, IAction {
         this.defense = defense;
     }
 
-    public void setStatusEffect(IStatusEffect effect) {
-        activeEffects.add(effect);
+    public void setStatusEffect(IStatusEffect effectInterface) {
+        activeEffects.add(effectInterface);
+        effectInterface.applyEffect(this);
     }
 
     public void setSkipTurn(boolean skipped) {
         isTurnSkipped = skipped;
     }
 
-    // We apply each activeEffect to the combatant
     public void updateStatusEffect() {
-        java.util.Iterator<IStatusEffect> iterator = activeEffects.iterator();
-        while (iterator.hasNext()) {
-            IStatusEffect e = iterator.next();
-            if (!e.isEffectExpired()) {
-                e.applyEffect(this);
-            } else {
-                iterator.remove();
+        ArrayList<IStatusEffect> toRemove = new ArrayList<>();
+
+        for (IStatusEffect effect : activeEffects) {
+            // If the effect has yet to expire, we decrease the duration by 1
+            effect.decreaseDuration();
+
+            if (effect.isEffectExpired()) {
+                effect.removeEffect(this);
+                toRemove.add(effect);
             }
         }
+
+        activeEffects.removeAll(toRemove);
     }
 
     public void takeDamage(int damageAmt) {
-        // To ensure that the HP will always be 0 and above using the Math.max method
-        int effectiveDmg = Math.max(0, damageAmt);
-        currentHP = Math.max(0, currentHP - effectiveDmg);
+        currentHP -= damageAmt;
+        if (currentHP < 0) {
+            currentHP = 0;
+    }
     }
 
     public void healHP(int healAmt) {
-        if (currentHP + healAmt > maxHP)
+        currentHP += healAmt;
+        if (currentHP > maxHP) {
             currentHP = maxHP;
-        else
-            currentHP += healAmt;
+        }
     }
 
     public boolean isAlive() {
@@ -104,12 +109,12 @@ public abstract class Combatant implements IStatusEffect, IAction {
         return isTurnSkipped;
     }
 
-    // TODO: Check if there is a different way of implementation for these two methods based on the PDF
-    public void decreaseSkillCooldown() {
-        skillCooldown--;
+    public void decreaseCooldown() {
+        if (skillCooldown > 0)
+            skillCooldown--;
     }
 
-    public void resetSkillCooldown() {
-        skillCooldown = 0;
+    public void resetCooldown() {
+        skillCooldown = 3; //putting 3 rn
     }
 }

@@ -12,8 +12,7 @@ public class WarriorRole extends PlayerRole {
         enemy.takeDamage(damage);
         System.out.println("Warrior uses Shield Bash on " + enemy.getCombatantName() + " for " + damage + " damage!");
 
-        // apply stun effect (waiting on harini's EffectStun)
-        // enemy.setStatusEffect(new EffectStun());
+        enemy.setStatusEffect(new EffectStun());
 
         System.out.println(enemy.getCombatantName() + " is stunned!");
 
