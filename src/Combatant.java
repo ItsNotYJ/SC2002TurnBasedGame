@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public abstract class Combatant implements IStatusEffect, IAction {
-    private String combatantName;
+    private final String combatantName;
     private int currentHP;
     private int maxHP;
     private int attack;
@@ -12,7 +12,7 @@ public abstract class Combatant implements IStatusEffect, IAction {
     private ArrayList<IStatusEffect> activeEffects;
 
     public Combatant(String combatantName, int speed, int defense, int attack, int maxHP) {
-        this.activeEffects = new ArrayList<IStatusEffect>();
+        this.activeEffects = new ArrayList<>();
         this.isTurnSkipped = false;
         this.skillCooldown = 0;
 
@@ -27,6 +27,8 @@ public abstract class Combatant implements IStatusEffect, IAction {
     public String getCombatantName() {
         return combatantName;
     }
+
+    public ArrayList<IStatusEffect> getActiveEffects() { return activeEffects; }
 
     public int getCurrentHP() {
         return currentHP;
@@ -66,7 +68,7 @@ public abstract class Combatant implements IStatusEffect, IAction {
     }
 
     public void setSkipTurn(boolean skipped) {
-        this.isTurnSkipped = skipped;
+        isTurnSkipped = skipped;
     }
 
     public void updateStatusEffect() {
@@ -107,7 +109,7 @@ public abstract class Combatant implements IStatusEffect, IAction {
     public void decreaseCooldown() {
         if (this.skillCooldown > 0) {
             this.skillCooldown--;
-    }
+      }
     }
 
     public void resetCooldown() {
