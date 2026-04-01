@@ -62,38 +62,40 @@ public abstract class Combatant implements IStatusEffect, IAction {
         this.defense = defense;
     }
 
-    public void setStatusEffect(IStatusEffect effect) {
-        activeEffects.add(effect);
+    public void setStatusEffect(IStatusEffect effectInterface) {
+        this.activeEffects.add(effectInterface);
+        effectInterface.applyEffect(this);
     }
 
     public void setSkipTurn(boolean skipped) {
         isTurnSkipped = skipped;
     }
 
-    // We apply each activeEffect to the combatant
     public void updateStatusEffect() {
-        java.util.Iterator<IStatusEffect> iterator = activeEffects.iterator();
-        while (iterator.hasNext()) {
-            IStatusEffect e = iterator.next();
-            if (!e.isEffectExpired()) {
-                e.applyEffect(this);
-            } else {
-                iterator.remove();
-            }
+    ArrayList<IStatusEffect> toRemove = new ArrayList<>();
+
+    for (IStatusEffect effect : activeEffects) {
+        if (effect.isEffectExpired()) {
+            effect.removeEffect(this);
+            toRemove.add(effect);
         }
     }
 
+    activeEffects.removeAll(toRemove);
+    }
+
     public void takeDamage(int damageAmt) {
-        // To ensure that the HP will always be 0 and above using the Math.max method
-        int effectiveDmg = Math.max(0, damageAmt);
-        currentHP = Math.max(0, currentHP - effectiveDmg);
+        this.currentHP -= damageAmt;
+        if (this.currentHP < 0) {
+            this.currentHP = 0;
+    }
     }
 
     public void healHP(int healAmt) {
-        if (currentHP + healAmt > maxHP)
-            currentHP = maxHP;
-        else
-            currentHP += healAmt;
+        this.currentHP += healAmt;
+        if (this.currentHP > this.maxHP) {
+            this.currentHP = this.maxHP;
+        }
     }
 
     public boolean isAlive() {
@@ -104,11 +106,13 @@ public abstract class Combatant implements IStatusEffect, IAction {
         return isTurnSkipped;
     }
 
-    public void decreaseSkillCooldown() {
-        skillCooldown--;
+    public void decreaseCooldown() {
+        if (this.skillCooldown > 0) {
+            this.skillCooldown--;
+      }
     }
 
-    public void resetSkillCooldown() {
-        skillCooldown = 0;
+    public void resetCooldown() {
+        this.skillCooldown = 3; //putting 3 rn
     }
 }

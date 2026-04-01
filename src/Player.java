@@ -26,9 +26,11 @@ public class Player extends Combatant {
         inventory.remove(item); // Might wanna test this if it works
     }
 
-    // TODO: To implement based on given player role
     public void useSpecialSkill(Combatant enemy, BattleEngine engine) {
-
+        if (this.getSkillCooldown() == 0) {
+            this.selectedRole.doSpecialSkill(this, enemy, engine);
+            this.resetCooldown();
+        }
     }
 
     // IAction Method Overriding
