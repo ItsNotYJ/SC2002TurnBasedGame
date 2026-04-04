@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,10 +11,16 @@ public class UserInterface {
         this.engine = new BattleEngine();
     }
 
+    public BattleEngine getEngine() {
+        return engine;
+    }
+
     // We use this method as the initial start up and loading screen for the player
     public void initGame() {
         WarriorRole displayWarrior = new WarriorRole();
         WizardRole displayWizard = new WizardRole();
+        EnemyGoblin displayGoblin = new EnemyGoblin();
+        EnemyWolf displayWolf = new EnemyWolf();
 
         System.out.println("========================================");
         System.out.println("       TURN-BASED COMBAT ARENA");
@@ -112,8 +119,16 @@ public class UserInterface {
         System.out.println("3. Hard (2 Goblins | Backup: 1 Goblin, 2 Wolves)");
 
         System.out.println("\nEnemy Stats:");
-        System.out.println("- Goblin: HP: 55 | Attack: 35 | Defense: 15 | Speed: 25");
-        System.out.println("- Wolf: HP: 40 | Attack: 45 | Defense: 5 | Speed: 35");
+
+        System.out.println("- Goblin");
+        System.out.printf("   Attributes: HP: %d | Attack: %d | Defense: %d | Speed: %d\n",
+                displayGoblin.getMaxHP(), displayGoblin.getAttack(),
+                displayGoblin.getDefense(), displayGoblin.getSpeed());
+
+        System.out.println("- Wolf");
+        System.out.printf("   Attributes: HP: %d | Attack: %d | Defense: %d | Speed: %d\n",
+                displayWolf.getMaxHP(), displayWolf.getAttack(),
+                displayWolf.getDefense(), displayWolf.getSpeed());
 
         // Initialize the player selection for player role (Wizard / Warrior)
         int diffSelect = 0;
@@ -164,14 +179,84 @@ public class UserInterface {
     }
 
     public void displayBattle() {
-
+        // Loop through engine.getActiveCombatants() and print their current status
+        // e.g., Name, HP, and active status effects
+        System.out.println("\n--- CURRENT BATTLE STATUS ---");
+        for (Combatant c : engine.getActiveCombatants()) {
+            System.out.println(c.getCombatantName() + " | HP: " + c.getCurrentHP() + "/" + c.getMaxHP());
+        }
     }
 
     public void displayIfGameEnd(boolean didPlayerWin) {
-        
+        System.out.println("\n========================================");
+
+        // WORKAROUND: We must search the combatant list to find the Player and count live enemies
+        int finalPlayerHP = 0;
+        int enemiesRemaining = 0;
+
+        for (Combatant c : engine.getActiveCombatants()) {
+            if (c instanceof Player) {
+                // We found the player! Grab their HP.
+                finalPlayerHP = c.getCurrentHP();
+            } else if (c instanceof Enemy && c.isAlive()) {
+                // We found a living enemy, count them.
+                enemiesRemaining++;
+            }
+        }
+
+        if (didPlayerWin) {
+            System.out.println("Congratulations, you have defeated all your enemies.");
+            // Note: We cannot display Total Rounds without a getter in BattleEngine
+            System.out.println("Statistics: Remaining HP: " + finalPlayerHP +
+                    " | Total Rounds: N/A (Hidden in Engine)");
+        } else {
+            System.out.println("Defeated. Don't give up, try again!");
+            System.out.println("Statistics: Enemies remaining: " + enemiesRemaining +
+                    " | Total Rounds Survived: N/A (Hidden in Engine)");
+        }
+        System.out.println("========================================\n");
     }
 
     public IAction inputPlayerAction(Player player) {
-        return null;
+        // This method works perfectly without touching BattleEngine because
+        // the engine passes the 'player' object directly to this method as a parameter!
+
+        System.out.println("\n--- IT IS YOUR TURN ---");
+        System.out.println("Choose your action:");
+        System.out.println("1. Basic Attack");
+        System.out.println("2. Defend");
+        System.out.println("3. Use Item");
+        System.out.println("4. Special Skill");
+        System.out.print("Enter action (1-4): ");
+
+        int choice = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                return new ActionBasicAttack();
+            case 2:
+                return new ActionDefend();
+            case 3:
+                ArrayList<Item> inventory = player.getInventory();
+                if (inventory.isEmpty()) {
+                    System.out.println("You have no items left! Defaulting to Basic Attack.");
+                    return new ActionBasicAttack();
+                }
+                System.out.println("Select an item to use:");
+                for (int i = 0; i < inventory.size(); i++) {
+                    System.out.println((i + 1) + ". " + inventory.get(i).getItemName());
+                }
+                int itemIndex = sc.nextInt() - 1;
+
+                // Returns the specific ItemUse action with the chosen item
+                // Uncomment this once the ItemUse class has its constructor ready
+                // return new ItemUse(inventory.get(itemIndex));
+                return null;
+            case 4:
+                return new ActionSpecialSkill();
+            default:
+                System.out.println("Invalid choice. Defaulting to Basic Attack.");
+                return new ActionBasicAttack();
+        }
     }
 }

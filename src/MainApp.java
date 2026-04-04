@@ -6,6 +6,6 @@ public class MainApp {
         ui.initGame();
 
         // Start the battle loop via BattleEngine (check with others)
-        // ui.getEngine().startBattle();
+        ui.getEngine().startGame();
     }
 }
