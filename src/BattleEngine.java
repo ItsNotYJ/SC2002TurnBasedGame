@@ -131,6 +131,11 @@ public class BattleEngine {
             return WinCondition.UNDETERMINED;
         }
 
+        // if playing on medium or hard difficulty
+        if (!isBackupSpawned && difficulty.hasBackupSpawn()) {
+            return WinCondition.UNDETERMINED;
+        }
+
         // We do an immediate check to see if the player is still alive else the player has lost
         if (!player.isAlive())
             return WinCondition.LOST;
