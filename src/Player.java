@@ -39,37 +39,4 @@ public class Player extends Combatant {
             System.out.println("\nYour special skill is on cooldown for " + this.getSkillCooldown() + " more turns!");
         }
     }
-
-    @Override
-    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
-        return null;
-    }
-
-    @Override
-    public void applyEffect(Combatant target) {
-
-    }
-
-    @Override
-    public void removeEffect(Combatant target) {
-
-    }
-
-    @Override
-    public int getEffectDuration() {
-        return 0;
-    }
-
-    @Override
-    public String getEffectName() {
-        return "";
-    }
-
-    @Override
-    public boolean isEffectExpired() {
-        return false;
-    }
-
-    @Override
-    public void decreaseDuration() { decreaseCooldown(); }
 }

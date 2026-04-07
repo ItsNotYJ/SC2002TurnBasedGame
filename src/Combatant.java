@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public abstract class Combatant implements IStatusEffect, IAction {
+public abstract class Combatant {
     private final String combatantName;
     private int currentHP;
     private int maxHP;
@@ -93,7 +93,7 @@ public abstract class Combatant implements IStatusEffect, IAction {
         currentHP -= damageAmt;
         if (currentHP < 0) {
             currentHP = 0;
-    }
+        }
     }
 
     public void healHP(int healAmt) {
