@@ -17,8 +17,8 @@ public class WizardRole extends PlayerRole {
 
                 // If the wizard kills an enemy using his special skill, we add 10 attack to his stats permanantly
                 if (!e.isAlive()) {
-                    player.setAttack(player.getAttack() + 10);
-                    System.out.println("\n" + enemy.getCombatantName() + " was defeated! Wizard's attack increases by 10!");
+                    player.setStatusEffect(new EffectArcaneBlast());
+                    System.out.println("\n" + e.getCombatantName() + " was defeated! Wizard's attack increases by 10!");
                 }
             }
         }
