@@ -1,11 +1,13 @@
 public class MainApp {
     public static void main(String[] args) throws Exception {
-        UserInterface ui = new UserInterface();
+        boolean restartGame = true;
 
-        // Initialize the game parameters
-        ui.initGame();
+        while (restartGame) {
+            UserInterface ui = new UserInterface();
+            ui.initGame();
+            ui.getEngine().startGame();
 
-        // Start the battle loop via BattleEngine (check with others)
-        ui.getEngine().startGame();
+            restartGame = ui.checkIfRestartGame();
+        }
     }
 }

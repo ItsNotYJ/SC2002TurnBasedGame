@@ -370,8 +370,20 @@ public class UserInterface {
         for (Combatant c : engine.getActiveCombatants()) {
             if (c instanceof Player && c.isAlive()) {
                 System.out.printf("PLAYER: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
+                System.out.print("Active Status Effects: ");
+                for (IStatusEffect effect : c.getActiveEffects()) {
+                    System.out.printf("[" + effect.getEffectName() + " (" + effect.getEffectDuration() + ")]");
+                }
+                System.out.println();
+
             } else if (c instanceof Enemy && c.isAlive()) {
                 System.out.printf("ENEMY: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
+                System.out.print("Active Status Effects: ");
+                for (IStatusEffect effect : c.getActiveEffects()) {
+                    System.out.printf("[" + effect.getEffectName() + " (" + effect.getEffectDuration() + ")]");
+                }
+                System.out.println();
+
             } else {
                 System.out.printf("DEAD: %s\n", c.getCombatantName());
             }
@@ -392,10 +404,38 @@ public class UserInterface {
 
     public void displayTurnOrder(ArrayList<Combatant> turnOrder) {
         System.out.println("\n=========== TURN ORDER ===========\n");
-        for (int i = 0; i < turnOrder.size(); i++) {
+
+        for (int i = 0, count = 1; i < turnOrder.size(); i++) {
             Combatant c = turnOrder.get(i);
-            System.out.println((i + 1) + ". " + c.getCombatantName() + " (Speed: " + c.getSpeed() + ")");
+
+            if (c.isAlive()) {
+                System.out.println((count) + ". " + c.getCombatantName() + " (Speed: " + c.getSpeed() + ")");
+                count++;
+            }
         }
         System.out.println("\n================================");
+    }
+
+    public boolean checkIfRestartGame() {
+        System.out.print("\nWould you like to play again? (Y/N): ");
+        while (!sc.hasNext()) {
+            System.out.println("\nInvalid selection. Please try again!\n");
+            System.out.print("Would you like to play again? (Y/N): ");
+            sc.next();
+        }
+        String restart = sc.next().toLowerCase();
+
+        switch (restart) {
+            case "y":
+                System.out.println("Restarting the game...\n");
+                return true;
+            case "n":
+                System.out.println("Thank you for playing! Goodbye!");
+                return false;
+            default:
+                System.out.println("Invalid input. Please enter 'Y' or 'N'.");
+        }
+
+        return false;
     }
 }
