@@ -35,16 +35,16 @@ public class Player extends Combatant {
         if (this.getSkillCooldown() == 0) {
             this.selectedRole.doSpecialSkill(this, enemy, engine);
             this.resetCooldown();
+        } else {
+            System.out.println("\nYour special skill is on cooldown for " + this.getSkillCooldown() + " more turns!");
         }
     }
 
-    // IAction Method Overriding
     @Override
     public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
         return null;
     }
 
-    // IStatusEffect Method Overriding
     @Override
     public void applyEffect(Combatant target) {
 
@@ -58,6 +58,11 @@ public class Player extends Combatant {
     @Override
     public int getEffectDuration() {
         return 0;
+    }
+
+    @Override
+    public String getEffectName() {
+        return "";
     }
 
     @Override

@@ -7,12 +7,14 @@ public class BattleEngine {
     private Difficulty difficulty;
     private ArrayList<Combatant> activeCombatants;
     private boolean isBackupSpawned;
+    private UserInterface userInterface;
 
     public BattleEngine() {
         this.currentTurnOrder = new SpeedTurnOrder();
         this.roundCounter = 0;
-        this.activeCombatants = new ArrayList<Combatant>();
+        this.activeCombatants = new ArrayList<>();
         this.isBackupSpawned = false;
+        this.userInterface = null;
     }
 
     public ArrayList<Combatant> getActiveCombatants() {
@@ -29,7 +31,13 @@ public class BattleEngine {
         activeCombatants.addAll(difficulty.getInitialSpawn());
     }
 
+    public void setUserInterface(UserInterface ui) {
+        userInterface = ui;
+    }
+
     public void setCurrentTurnOrder(ITurnOrderStrategy turnOrderStrategy) { this.currentTurnOrder = turnOrderStrategy; }
+
+    public int getRoundCounter() { return roundCounter; }
 
     public void startGame() {
         if (player == null) {
@@ -59,8 +67,35 @@ public class BattleEngine {
                         // Object instance of an Enemy
                         e.performTurn(activeCombatants);
                     } else {
-                        // TODO: User Input and Object instance of a Player
+                        // We get the userinterface to get the player's action
+                        IAction playerAction = userInterface.inputPlayerAction(player);
+                        
+                        // Based on the action then we decide what logic to execute
+                        Combatant target = null;
+                        if (playerAction instanceof ActionBasicAttack || playerAction instanceof ActionSpecialSkill) {
+                            // Display enemies in field for player to choose who to attack
+                            userInterface.displayEnemiesInField();
 
+                            // Get player's target choice
+                            target = userInterface.inputPlayerTarget();
+
+                            // Then we execute the player's chosen action in this turn
+                            playerAction.executeTurn(c, target, this);
+                        } else if (playerAction instanceof ActionItemUse item) {
+                            // If the player chooses to use the power stone, we need to ask for a target
+                            // because it activates his/her special skill on a target
+                            if (item.getUsingItem() instanceof ItemPowerStone) {
+                                userInterface.displayEnemiesInField();
+                                target = userInterface.inputPlayerTarget();
+                            }
+                            
+                            // Then we execute the player's chosen action in this turn
+                            // If no target based on the chosen item, it will default to null
+                            playerAction.executeTurn(c, target, this);
+                        } else {
+                            // This is mainly for the defend action and item use action which doesn't require any specific combat logic
+                            playerAction.executeTurn(c, target, this);
+                        }
                     }
 
                 // We check the game ending condition after each action before moving to the next combatant
@@ -74,8 +109,11 @@ public class BattleEngine {
 
             // Print out end of round summary
             roundCounter++;
-            printRoundSummary(roundCounter);
+            userInterface.printRoundSummary(roundCounter);
         } while (checkGameEndingCondition() == WinCondition.UNDETERMINED);
+
+        // If the game has ended we print a final game summary, can be win or loss
+        userInterface.displayIfGameEnd(checkGameEndingCondition() == WinCondition.WON);
     }
 
     public WinCondition checkGameEndingCondition() {
@@ -113,19 +151,6 @@ public class BattleEngine {
             activeCombatants.addAll(difficulty.getBackupSpawn());
 
             isBackupSpawned = true;
-        }
-    }
-
-    private void printRoundSummary(int currentRound) {
-        System.out.printf("Round %d\n\n", currentRound);
-        for (Combatant c : activeCombatants) {
-            if (c instanceof Player && c.isAlive()) {
-                System.out.printf("PLAYER: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
-            } else if (c instanceof Enemy && c.isAlive()) {
-                System.out.printf("ENEMY: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
-            } else {
-                System.out.printf("DEAD: %s\n", c.getCombatantName());
-            }
         }
     }
 }

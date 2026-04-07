@@ -30,6 +30,11 @@ public class Enemy extends Combatant {
     }
 
     @Override
+    public String getEffectName() {
+        return "";
+    }
+
+    @Override
     public boolean isEffectExpired() {
         return false;
     }
