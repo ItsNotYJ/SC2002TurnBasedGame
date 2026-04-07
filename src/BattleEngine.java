@@ -57,10 +57,6 @@ public class BattleEngine {
             // also decrease the skill cooldown for the combatant if applicable
             for (Combatant c : activeCombatants) {
                 c.updateStatusEffect();
-
-                if (c instanceof Player p && c.getSkillCooldown() > 0) {
-                    p.decreaseCooldown();
-                }
             }
 
             // Loop through each combatant to execute their turns
@@ -103,6 +99,11 @@ public class BattleEngine {
                         } else {
                             // This is mainly for the defend action and item use action which doesn't require any specific combat logic
                             playerAction.executeTurn(c, target, this);
+                        }
+                        
+                        // We decrease the cooldown of the player's skills by 1 at the end of their turn if they are on cooldown
+                        if (c instanceof Player p && c.getSkillCooldown() > 0) {
+                            p.decreaseCooldown();
                         }
                     }
 
