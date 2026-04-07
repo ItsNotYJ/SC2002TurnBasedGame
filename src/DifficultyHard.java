@@ -12,7 +12,7 @@ public class DifficultyHard extends Difficulty {
         ArrayList<Enemy> backupEnemies = new ArrayList<>();
         backupEnemies.add(new EnemyWolf("Wolf A"));
         backupEnemies.add(new EnemyWolf("Wolf B"));
-        backupEnemies.add(new EnemyGoblin("Goblin A"));
+        backupEnemies.add(new EnemyGoblin("Goblin C"));
         this.setBackupEnemies(backupEnemies);
     }
 }

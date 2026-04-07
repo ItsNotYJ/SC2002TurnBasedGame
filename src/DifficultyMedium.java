@@ -11,8 +11,8 @@ public class DifficultyMedium extends Difficulty {
         this.setEnemiesInDifficulty(enemies);
 
         ArrayList<Enemy> backupEnemies = new ArrayList<>();
-        backupEnemies.add(new EnemyWolf("Wolf A"));
         backupEnemies.add(new EnemyWolf("Wolf B"));
+        backupEnemies.add(new EnemyWolf("Wolf C"));
         this.setBackupEnemies(backupEnemies);
         System.out.print("");
     }
