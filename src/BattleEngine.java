@@ -49,10 +49,18 @@ public class BattleEngine {
         do {
             // First we determine the order of combatants based on their speed stat (SpeedTurnOrder)
             activeCombatants = currentTurnOrder.determineOrder(activeCombatants);
+            
+            // We show the player the turn order
+            userInterface.displayTurnOrder(activeCombatants);
 
             // Apply any applicable active status effect for each combatant at the start
+            // also decrease the skill cooldown for the combatant if applicable
             for (Combatant c : activeCombatants) {
                 c.updateStatusEffect();
+
+                if (c instanceof Player p && c.getSkillCooldown() > 0) {
+                    p.decreaseCooldown();
+                }
             }
 
             // Loop through each combatant to execute their turns
