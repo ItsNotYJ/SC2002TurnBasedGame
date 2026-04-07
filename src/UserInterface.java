@@ -315,10 +315,11 @@ public class UserInterface {
             for (Combatant c : engine.getActiveCombatants()) {
                 if (c instanceof Enemy && c.isAlive()) {
                     System.out.println(count + ". " + c.getCombatantName() + " | HP: " + c.getCurrentHP() + "/" + c.getMaxHP());
+                    displayStatusEffects(c);
                     count++;
                 }
             }
-            System.out.println("\n============================================");
+            System.out.println("============================================");
     }
 
     public void displayPlayerStatus(Player player) {
@@ -331,7 +332,8 @@ public class UserInterface {
         for (Item item : player.getInventory()) {
             System.out.println("- " + item.getItemName());
         }
-        System.out.println("\n===================================");
+        displayStatusEffects(player);
+        System.out.println("===================================");
     }
 
     public Combatant inputPlayerTarget() {
@@ -370,19 +372,11 @@ public class UserInterface {
         for (Combatant c : engine.getActiveCombatants()) {
             if (c instanceof Player && c.isAlive()) {
                 System.out.printf("PLAYER: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
-                System.out.print("Active Status Effects: ");
-                for (IStatusEffect effect : c.getActiveEffects()) {
-                    System.out.printf("[" + effect.getEffectName() + " (" + effect.getEffectDuration() + ")]");
-                }
-                System.out.println();
+                displayStatusEffects(c);
 
             } else if (c instanceof Enemy && c.isAlive()) {
                 System.out.printf("ENEMY: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
-                System.out.print("Active Status Effects: ");
-                for (IStatusEffect effect : c.getActiveEffects()) {
-                    System.out.printf("[" + effect.getEffectName() + " (" + effect.getEffectDuration() + ")]");
-                }
-                System.out.println();
+                displayStatusEffects(c);
 
             } else {
                 System.out.printf("DEAD: %s\n", c.getCombatantName());
@@ -416,26 +410,58 @@ public class UserInterface {
         System.out.println("\n================================");
     }
 
-    public boolean checkIfRestartGame() {
-        System.out.print("\nWould you like to play again? (Y/N): ");
+    public int checkIfRestartGame() {
+        System.out.println("\n=========== RESTART GAME? ===========\n");
+        System.out.println("1. Replay with same settings");
+        System.out.println("2. Start a new game");
+        System.out.println("3. Exit");
+
+        System.out.print("\nSelect an option: ");
         while (!sc.hasNext()) {
             System.out.println("\nInvalid selection. Please try again!\n");
-            System.out.print("Would you like to play again? (Y/N): ");
+            System.out.print("Select an option: ");
             sc.next();
         }
-        String restart = sc.next().toLowerCase();
+        int restart = sc.nextInt();
 
-        switch (restart) {
-            case "y":
-                System.out.println("Restarting the game...\n");
-                return true;
-            case "n":
-                System.out.println("Thank you for playing! Goodbye!");
-                return false;
-            default:
-                System.out.println("Invalid input. Please enter 'Y' or 'N'.");
+        if (restart < 1 || restart > 3) {
+            System.out.println("\nInvalid selection. Please try again!\n");
+            return checkIfRestartGame();
         }
 
-        return false;
+        switch (restart) {
+            case 1:
+                System.out.println("Restarting the game...\n");
+                return 1;
+            case 2:
+                System.out.println("Starting a new game...\n");
+                return 2;
+            case 3:
+                System.out.println("Thank you for playing! Goodbye!");
+                return 3;
+            default:
+                System.out.println("Invalid input. Please enter 1, 2, or 3.");
+        }
+
+        return 3;
+    }
+
+    public void displayStatusEffects(Combatant c) {
+        // We show the active status effects if its not empty
+        if (c instanceof Player && c.getActiveEffects().isEmpty()) { // Show for player status if no active effects
+            System.out.println("You have no active status effects.\n");
+        } else if (c instanceof Enemy && c.getActiveEffects().isEmpty()) {
+            System.out.println("The enemy has no active status effects.\n");
+        } else { // This is the default case for both player and enemy
+            System.out.print("Active Status Effects: ");
+            for (IStatusEffect effect : c.getActiveEffects()) {
+                System.out.printf("[" + effect.getEffectName() + " (" + effect.getEffectDuration() + ")]");
+            }
+            System.out.println("\n");
+        }
+    }
+
+    public void resetGame() {
+
     }
 }
