@@ -5,7 +5,7 @@ public class ActionSpecialSkill implements IAction {
     @Override
     public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
         if (user instanceof Player p) {
-            System.out.println(p.getCombatantName() + " uses their Special Skill!");
+            System.out.println("\n" + p.getCombatantName() + " uses their Special Skill!");
             p.useSpecialSkill(target, engine);
         }
 

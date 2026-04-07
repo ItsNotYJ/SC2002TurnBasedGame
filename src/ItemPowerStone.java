@@ -6,17 +6,17 @@ public class ItemPowerStone extends Item {
 
     @Override
     public void useItem(Combatant user, Combatant target, BattleEngine engine) {
-        System.out.println(user.getCombatantName() + " crushes the Power Stone! It glows with intense energy...");
+        System.out.println("\n" +user.getCombatantName() + " crushes the Power Stone! It glows with intense energy...");
 
         // checking to make sure the user is a Player
         if (user instanceof Player player) {
             // force the player to use their special skill
             player.triggerSpecialSkill(target, engine);
 
-            System.out.println("The Power Stone shatters, leaving no cooldown!");
+            System.out.println("\nThe Power Stone shatters, leaving no cooldown!");
         } else {
             // in case an enemy somehow gets their hands on this item
-            System.out.println("The Power Stone has no effect on " + user.getCombatantName() + ".");
+            System.out.println("\nThe Power Stone has no effect on " + user.getCombatantName() + ".");
         }
     }
 }
