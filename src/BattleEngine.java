@@ -90,9 +90,9 @@ public class BattleEngine {
                             // Then we execute the player's chosen action in this turn
                             playerAction.executeTurn(c, target, this);
                         } else if (playerAction instanceof ActionItemUse item) {
-                            // If the player chooses to use the power stone, we need to ask for a target
+                            // If the player chooses to use the power stone, we need to ask for a target (only for warrior)
                             // because it activates his/her special skill on a target
-                            if (item.getUsingItem() instanceof ItemPowerStone) {
+                            if (item.getUsingItem() instanceof ItemPowerStone && player.getSelectedRole() instanceof WarriorRole) {
                                 userInterface.displayEnemiesInField();
                                 target = userInterface.inputPlayerTarget();
                             }
