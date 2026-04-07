@@ -75,14 +75,14 @@ public abstract class Combatant {
         ArrayList<IStatusEffect> toRemove = new ArrayList<>();
 
         for (IStatusEffect effect : activeEffects) {
-            // If the effect has yet to expire, we decrease the duration by 1
-            effect.decreaseDuration();
-
             if (effect.isEffectExpired()) {
                 effect.removeEffect(this);
                 toRemove.add(effect);
 
                 System.out.println(effect.getEffectName() + " has expired for " + this.getCombatantName() + "!");
+            } else {
+                // If the effect has yet to expire, we decrease the duration by 1
+                effect.decreaseDuration();
             }
         }
 
