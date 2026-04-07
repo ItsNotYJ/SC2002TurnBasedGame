@@ -11,6 +11,8 @@ public class ActionItemUse implements IAction {
         }
     }
 
+    public Item getUsingItem() { return usingItem; }
+
     @Override
     public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {// takes the engines execute command and passes it to item
         if (usingItem != null) {

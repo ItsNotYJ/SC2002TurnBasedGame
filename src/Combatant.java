@@ -81,6 +81,8 @@ public abstract class Combatant implements IStatusEffect, IAction {
             if (effect.isEffectExpired()) {
                 effect.removeEffect(this);
                 toRemove.add(effect);
+
+                System.out.println(effect.getEffectName() + " has expired for " + this.getCombatantName() + "!");
             }
         }
 
@@ -115,6 +117,6 @@ public abstract class Combatant implements IStatusEffect, IAction {
     }
 
     public void resetCooldown() {
-        skillCooldown = 3; //putting 3 rn
+        skillCooldown = 3;
     }
 }

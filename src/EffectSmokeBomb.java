@@ -1,15 +1,21 @@
 public class EffectSmokeBomb implements IStatusEffect {
-   private int duration = 2; //lasts for current and next turn
+    private final String effectName = "Smoke Bomb";
+    private int duration = 2; //lasts for current and next turn
+
+    @Override
+    public String getEffectName() {
+        return effectName;
+    }
 
     @Override
     public void applyEffect(Combatant target) {
         //to notify console
-        System.out.println(target.getCombatantName() + " is hidden in smoke and will take 0 damage!");
+        System.out.println("\n" + target.getCombatantName() + " is hidden in smoke and will take 0 damage!");
     }
 
     @Override
     public void removeEffect(Combatant target) {
-        System.out.println("The smoke around " + target.getCombatantName() + " clears.");
+        System.out.println("The fog of war around the " + target.getCombatantName() + " clears.");
     }
 
     @Override

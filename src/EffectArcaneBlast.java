@@ -1,5 +1,11 @@
 public class EffectArcaneBlast implements IStatusEffect {
+    private final String effectName = "Arcane Blast";
     private int duration = 99999;
+
+    @Override
+    public String getEffectName() {
+        return effectName;
+    }
 
     @Override
     public void applyEffect(Combatant target) {
