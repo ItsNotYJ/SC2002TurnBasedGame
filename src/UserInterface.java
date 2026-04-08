@@ -7,10 +7,12 @@ public class UserInterface {
     private int originalRoleSelect;
     private ArrayList<Item> originalItems;
     private int originalDiffSelect;
+    private ArrayList<String> battleLog;
 
     public UserInterface() {
         this.sc = new Scanner(System.in);
         this.engine = new BattleEngine();
+        this.battleLog = new ArrayList<>();
     }
 
     public BattleEngine getEngine() {
@@ -258,6 +260,8 @@ public class UserInterface {
             System.out.printf("Total Rounds Survived: %d\n", engine.getRoundCounter());
         }
         System.out.println("────────────────────────────────────────────\n");
+
+        printBattleLog();
     }
 
     public IAction inputPlayerAction(Player player) {
@@ -403,23 +407,63 @@ public class UserInterface {
     }
 
     public void printRoundSummary(int currentRound) {
-        System.out.println(  "\n┌──────────────────────────────────────────┐");
-        System.out.printf("│                ROUND %-3d                 │\n", currentRound);
-        System.out.println(    "└──────────────────────────────────────────┘\n");
+        String roundSummary = buildRoundSummaryString(currentRound);
+        battleLog.add(roundSummary);
+    }
+
+    public void resetBattleLog() {
+        battleLog.clear();
+    }
+
+    public void printBattleLog() {
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println(  "│                BATTLE LOG                │");
+        System.out.println(  "└──────────────────────────────────────────┘\n");
+
+        if (battleLog.isEmpty()) {
+            System.out.println("No rounds were logged.");
+            System.out.println("\n────────────────────────────────────────────\n");
+            return;
+        }
+
+        for (String roundSummary : battleLog) {
+            System.out.print(roundSummary);
+        }
+
+        System.out.println("────────────────────────────────────────────\n");
+    }
+
+    private String buildRoundSummaryString(int currentRound) {
+        StringBuilder summary = new StringBuilder();
+        summary.append(String.format("Round %-3d | ", currentRound));
+
         for (Combatant c : engine.getActiveCombatants()) {
-            if (c instanceof Player && c.isAlive()) {
-                System.out.printf("[PLAYER] %-12s │ HP: %3d\n", c.getCombatantName(), c.getCurrentHP());
-                displayStatusEffects(c);
-
-            } else if (c instanceof Enemy && c.isAlive()) {
-                System.out.printf("[ENEMY]  %-12s │ HP: %3d\n", c.getCombatantName(), c.getCurrentHP());
-                displayStatusEffects(c);
-
-            } else {
-                System.out.printf("[DEAD]   %-12s\n", c.getCombatantName());
+            if (c instanceof Player) {
+                summary.append(String.format("PLAYER %s HP:%d/%d", c.getCombatantName(), c.getCurrentHP(), c.getMaxHP()));
+                summary.append(" | ");
+                break;
             }
         }
-        System.out.println("\n────────────────────────────────────────────");
+
+        summary.append("ENEMIES: ");
+        boolean hasEnemy = false;
+        for (Combatant c : engine.getActiveCombatants()) {
+            if (c instanceof Enemy) {
+                hasEnemy = true;
+                if (c.isAlive()) {
+                    summary.append(String.format("%s(%d/%d) ", c.getCombatantName(), c.getCurrentHP(), c.getMaxHP()));
+                } else {
+                    summary.append(String.format("%s(DEAD) ", c.getCombatantName()));
+                }
+            }
+        }
+
+        if (!hasEnemy) {
+            summary.append("None");
+        }
+
+        summary.append("\n");
+        return summary.toString();
     }
 
     public void displayPlayerInventory(Player player) {
