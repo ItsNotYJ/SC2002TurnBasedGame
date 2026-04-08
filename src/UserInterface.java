@@ -4,6 +4,9 @@ import java.util.Scanner;
 public class UserInterface {
     private Scanner sc;
     private BattleEngine engine;
+    private int originalRoleSelect;
+    private ArrayList<Item> originalItems;
+    private int originalDiffSelect;
 
     public UserInterface() {
         this.sc = new Scanner(System.in);
@@ -49,6 +52,11 @@ public class UserInterface {
         };
         engine.setDifficulty(diff);
         engine.setUserInterface(this);
+
+        // We save the original settings for when the player wants to replay the game with the same settings
+        this.originalRoleSelect = roleSelect;
+        this.originalItems = selectedItems;
+        this.originalDiffSelect = diffSelect;
 
         // End init
         System.out.println();
@@ -462,6 +470,36 @@ public class UserInterface {
     }
 
     public void resetGame() {
+        // We reset the game by reusing the original settings that the player chose during init
+        Player resetPlayer = null;
+        switch (originalRoleSelect) {
+            case 1:
+                resetPlayer = new Player(new WarriorRole(), originalItems);
+                break;
+            case 2:
+                resetPlayer = new Player(new WizardRole(), originalItems);
+                break;
+            default:
+                break;
+        };
+        engine.setPlayer(resetPlayer);
 
+        Difficulty resetDiff = null;
+        switch (originalDiffSelect) {
+            case 1:
+                resetDiff = new DifficultyEasy();
+                break;
+            case 2:
+                resetDiff = new DifficultyMedium();
+                break;
+            case 3:
+                resetDiff = new DifficultyHard();
+                break;
+            default:
+                break;
+        };
+        engine.setDifficulty(resetDiff);
+
+        System.out.println("Game reset successfully with your original settings! Good luck and have fun!\n\n");
     }
 }
