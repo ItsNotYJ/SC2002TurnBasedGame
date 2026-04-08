@@ -247,6 +247,7 @@ public class UserInterface {
             System.out.println(  "║                 VICTORY!                 ║");
             System.out.println(  "╚══════════════════════════════════════════╝");
             System.out.println("\nCongratulations! You defeated all enemies!\n");
+            System.out.println("────────────────────────────────────────────");
             System.out.println("─── Statistics ───");
             System.out.printf("Remaining HP:  %d\n", finalPlayerHP);
             System.out.printf("Total Rounds:  %d\n", engine.getRoundCounter());
@@ -255,12 +256,12 @@ public class UserInterface {
             System.out.println(  "║                 DEFEATED                 ║");
             System.out.println(  "╚══════════════════════════════════════════╝");
             System.out.println("\nDon't give up! You can try again!\n");
+            System.out.println("────────────────────────────────────────────");
             System.out.println("─── Statistics ───");
             System.out.printf("Enemies Remaining:     %d\n", enemiesRemaining);
             System.out.printf("Total Rounds Survived: %d\n", engine.getRoundCounter());
         }
-        System.out.println("────────────────────────────────────────────\n");
-
+        System.out.println("");
         printBattleLog();
     }
 
@@ -422,14 +423,12 @@ public class UserInterface {
 
         if (battleLog.isEmpty()) {
             System.out.println("No rounds were logged.");
-            System.out.println("");
             System.out.println("\n────────────────────────────────────────────\n");
             return;
         }
 
         for (String roundSummary : battleLog) {
             System.out.print(roundSummary);
-            System.out.println("");
         }
 
         System.out.println("────────────────────────────────────────────\n");
