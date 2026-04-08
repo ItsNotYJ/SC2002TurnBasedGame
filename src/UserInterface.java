@@ -422,12 +422,14 @@ public class UserInterface {
 
         if (battleLog.isEmpty()) {
             System.out.println("No rounds were logged.");
+            System.out.println("");
             System.out.println("\n────────────────────────────────────────────\n");
             return;
         }
 
         for (String roundSummary : battleLog) {
             System.out.print(roundSummary);
+            System.out.println("");
         }
 
         System.out.println("────────────────────────────────────────────\n");
