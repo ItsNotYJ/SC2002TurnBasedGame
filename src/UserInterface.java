@@ -24,10 +24,10 @@ public class UserInterface {
         EnemyGoblin displayGoblin = new EnemyGoblin("Goblin");
         EnemyWolf displayWolf = new EnemyWolf("Wolf");
 
-        System.out.println("========================================");
-        System.out.println("       TURN-BASED COMBAT ARENA");
-        System.out.println("========================================");
-        System.out.println("Welcome to the game! Press <Enter> to start!");
+        System.out.println("╔══════════════════════════════════════════╗");
+        System.out.println("║          TURN-BASED COMBAT GAME          ║");
+        System.out.println("╚══════════════════════════════════════════╝");
+        System.out.println("\nWelcome to the game! Press <Enter> to start!");
         sc.nextLine();
 
         System.out.println("Loading Game...\n");
@@ -59,41 +59,44 @@ public class UserInterface {
         this.originalDiffSelect = diffSelect;
 
         // End init
-        System.out.println();
-        System.out.println("Game initialized successfully! Good luck and have fun!\n\n");
+        System.out.println("\n╔══════════════════════════════════════════╗");
+        System.out.println(  "║        Game initialized! Good luck!      ║");
+        System.out.println(  "╚══════════════════════════════════════════╝\n");
     }
-
+ 
     private int initRole(WarriorRole displayWarrior, WizardRole displayWizard) {
-        System.out.println("=========== SELECT YOUR ROLE ===========");
-        System.out.println("1. Warrior");
-        System.out.printf("   Attributes: HP: %d | Attack: %d | Defense: %d | Speed: %d\n",
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│             SELECT YOUR ROLE             │");
+        System.out.println("└──────────────────────────────────────────┘");
+        System.out.println("\n[1] Warrior");
+        System.out.printf("    HP: %-3d | ATK: %-3d | DEF: %-3d | SPD: %-3d\n",
                 displayWarrior.getMaxHP(), displayWarrior.getAttack(),
                 displayWarrior.getDefense(), displayWarrior.getSpeed());
-        System.out.println("   Special Skill: Shield Bash (Stuns enemy for 2 turns)\n");
+        System.out.println("    Skill: Shield Bash (Stuns enemy for 2 turns)\n");
 
-        System.out.println("2. Wizard");
-        System.out.printf("   Attributes: HP: %d | Attack: %d | Defense: %d | Speed: %d\n",
+        System.out.println("[2] Wizard");
+        System.out.printf("    HP: %-3d | ATK: %-3d | DEF: %-3d | SPD: %-3d\n",
                 displayWizard.getMaxHP(), displayWizard.getAttack(),
                 displayWizard.getDefense(), displayWizard.getSpeed());
-        System.out.println("   Special Skill: Arcane Blast (+10 Attack per kill)\n");
+        System.out.println("    Skill: Arcane Blast (+10 Attack per kill)\n");
 
         // Initialize the player selection for player role (Wizard / Warrior)
         int roleSelect = 0;
         do {
-            System.out.print("Select your role: ");
+            System.out.print("-> Select your role (1-2): ");
             while (!sc.hasNextInt()) {
-                System.out.println("Invalid selection. Please try again!\n");
-                System.out.print("Select your role: ");
+                System.out.println("[!] Invalid input. Please enter a number.\n");
+                System.out.print("-> Select your role (1-2): ");
                 sc.next();
             }
             roleSelect = sc.nextInt();
 
             if (roleSelect < 1 || roleSelect > 2) {
-                System.out.println("Invalid selection. Please try again!\n");
+                System.out.println("[!] Invalid selection. Please choose 1 or 2.\n");
             } else {
                 switch (roleSelect) {
-                    case 1 -> System.out.println("You have chosen the Warrior role!");
-                    case 2 -> System.out.println("You have chosen the Wizard role!");
+                    case 1 -> System.out.println("-> You have chosen the Warrior role!");
+                    case 2 -> System.out.println("-> You have chosen the Wizard role!");
                 }
             }
 
@@ -105,38 +108,40 @@ public class UserInterface {
 
     private ArrayList<Item> initInventory() {
         // Initialize the player selection for inventory items (2 items, can allow duplicates)
-        // 2. Item Selection
-        System.out.println("\n=========== SELECT YOUR ITEMS (Choose 2, duplicates allowed) ===========");
-        System.out.println("1. Potion (Heal 100 HP)");
-        System.out.println("2. Power Stone (Free use of Special Skill without cooldown)");
-        System.out.println("3. Smoke Bomb (Enemy attacks deal 0 damage for 2 turns)\n");
+        System.out.println("\n┌──────────────────────────────────────────┐");
+        System.out.println(  "│       SELECT YOUR ITEMS (Choose 2)       │");
+        System.out.println(  "└──────────────────────────────────────────┘");
+        System.out.println("(Duplicates allowed)\n");
+        System.out.println("[1] Potion      - Heal 100 HP");
+        System.out.println("[2] Power Stone - Free Special Skill (no cooldown)");
+        System.out.println("[3] Smoke Bomb  - Enemy deals 0 damage for 2 turns\n");
         ArrayList<Item> selectedItems = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             int itemSelect = 0;
             do {
-                System.out.print("Select item " + (i + 1) + ": ");
+                System.out.print("-> Select item " + (i + 1) + " (1-3): ");
                 while (!sc.hasNextInt()) {
-                    System.out.println("Invalid selection. Please try again!\n");
-                    System.out.print("Select item " + (i + 1) + ": ");
+                    System.out.println("[!] Invalid input. Please enter a number.\n");
+                    System.out.print("-> Select item " + (i + 1) + " (1-3): ");
                     sc.next();
                 }
                 itemSelect = sc.nextInt();
 
                 if (itemSelect < 1 || itemSelect > 3)
-                    System.out.println("Invalid selection. Please try again!\n");
+                    System.out.println("[!] Invalid selection. Please choose 1, 2, or 3.\n");
                 else {
                     switch (itemSelect) {
                         case 1:
                             selectedItems.add(new ItemPotion());
-                            System.out.println("You have chosen Potion!");
+                            System.out.println("-> Potion added!");
                             break;
                         case 2:
                             selectedItems.add(new ItemPowerStone());
-                            System.out.println("You have chosen Power Stone!");
+                            System.out.println("-> Power Stone added!");
                             break;
                         case 3:
                             selectedItems.add(new ItemSmokeBomb());
-                            System.out.println("You have chosen Smoke Bomb!");
+                            System.out.println("-> Smoke Bomb added!");
                             break;
                     }
                 }
@@ -146,8 +151,10 @@ public class UserInterface {
             System.out.println();
         }
 
-        System.out.printf("You have selected the following items:\n1. %s\n2. %s\n\n",
+        System.out.println("\n─────────────────────────────────────────");
+        System.out.printf("Selected Items: %s, %s\n",
                 selectedItems.get(0).getItemName(), selectedItems.get(1).getItemName());
+        System.out.println("─────────────────────────────────────────\n");
         
         return selectedItems;
     }
@@ -155,46 +162,48 @@ public class UserInterface {
     private int initDifficulty(EnemyGoblin displayGoblin, EnemyWolf displayWolf) {
         // We initialize the game difficulty here
         // 3. Difficulty Selection
-        System.out.println("=========== SELECT DIFFICULTY ===========");
-        System.out.println("1. Easy (3 Goblins)");
-        System.out.println("2. Medium (1 Goblin, 1 Wolf | Backup: 2 Wolves)");
-        System.out.println("3. Hard (2 Goblins | Backup: 1 Goblin, 2 Wolves)");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│             SELECT DIFFICULTY            │");
+        System.out.println("└──────────────────────────────────────────┘");
+        System.out.println("\n[1] Easy   - 3 Goblins");
+        System.out.println("[2] Medium - 1 Goblin, 1 Wolf | Backup: 2 Wolves");
+        System.out.println("[3] Hard   - 2 Goblins | Backup: 1 Goblin, 2 Wolves");
 
-        System.out.println("\nEnemy Stats:");
+        System.out.println("\n─── Enemy Stats ───");
 
-        System.out.println("- Goblin");
-        System.out.printf("  Attributes: HP: %d | Attack: %d | Defense: %d | Speed: %d\n",
+        System.out.println("\n[X] Goblin");
+        System.out.printf("    HP: %-3d | ATK: %-3d | DEF: %-3d | SPD: %-3d\n",
                 displayGoblin.getMaxHP(), displayGoblin.getAttack(),
                 displayGoblin.getDefense(), displayGoblin.getSpeed());
 
-        System.out.println("- Wolf");
-        System.out.printf("  Attributes: HP: %d | Attack: %d | Defense: %d | Speed: %d\n\n",
+        System.out.println("\n[X] Wolf");
+        System.out.printf("    HP: %-3d | ATK: %-3d | DEF: %-3d | SPD: %-3d\n\n",
                 displayWolf.getMaxHP(), displayWolf.getAttack(),
                 displayWolf.getDefense(), displayWolf.getSpeed());
 
         // Initialize the player selection for player role (Wizard / Warrior)
         int diffSelect = 0;
         do {
-            System.out.print("Select your difficulty: ");
+            System.out.print("-> Select difficulty (1-3): ");
             while (!sc.hasNextInt()) {
-                System.out.println("Invalid selection. Please try again!\n");
-                System.out.print("Select your difficulty: ");
+                System.out.println("[!] Invalid input. Please enter a number.\n");
+                System.out.print("-> Select difficulty (1-3): ");
                 sc.next();
             }
             diffSelect = sc.nextInt();
 
             if (diffSelect < 1 || diffSelect > 3)
-                System.out.println("Invalid selection. Please try again!\n");
+                System.out.println("[!] Invalid selection. Please choose 1, 2, or 3.\n");
             else {
                 switch (diffSelect) {
                     case 1:
-                        System.out.println("You have chosen the Easy difficulty!");
+                        System.out.println("-> Difficulty set to Easy!");
                         break;
                     case 2:
-                        System.out.println("You have chosen the Medium difficulty!");
+                        System.out.println("-> Difficulty set to Medium!");
                         break;
                     case 3:
-                        System.out.println("You have chosen the Hard difficulty!");
+                        System.out.println("-> Difficulty set to Hard!");
                 }
             }
             // We exit the do-while loop once the user chooses 1 / 2 for the player role
@@ -206,18 +215,18 @@ public class UserInterface {
     public void displayBattle() {
         // Loop through engine.getActiveCombatants() and print their current status
         // e.g., Name, HP, and active status effects
-        System.out.println("\n=========== CURRENT BATTLE STATUS ===========\n");
+        System.out.println("\n┌──────────────────────────────────────────┐");
+        System.out.println(  "│          CURRENT BATTLE STATUS           │");
+        System.out.println(  "└──────────────────────────────────────────┘\n");
 
         for (Combatant c : engine.getActiveCombatants()) {
-            System.out.println(c.getCombatantName() + " | HP: " + c.getCurrentHP() + "/" + c.getMaxHP());
+            System.out.printf("  %-12s │ HP: %3d/%3d\n", c.getCombatantName(), c.getCurrentHP(), c.getMaxHP());
         }
         
-        System.out.println("\n=============================================");
+        System.out.println("\n────────────────────────────────────────────");
     }
 
     public void displayIfGameEnd(boolean didPlayerWin) {
-        System.out.println("\n========================================");
-
         // Summary stats
         int finalPlayerHP = 0;
         int enemiesRemaining = 0;
@@ -232,40 +241,49 @@ public class UserInterface {
 
         // Switch between either win or loss
         if (didPlayerWin) {
-            System.out.println("Congratulations, you have defeated all your enemies.");
-            // Note: We cannot display Total Rounds without a getter in BattleEngine
-            System.out.printf("Statistics: Remaining HP: %d | Total Rounds: %d\n",
-                            finalPlayerHP, engine.getRoundCounter());
+            System.out.println("\n╔══════════════════════════════════════════╗");
+            System.out.println(  "║                 VICTORY!                 ║");
+            System.out.println(  "╚══════════════════════════════════════════╝");
+            System.out.println("\nCongratulations! You defeated all enemies!\n");
+            System.out.println("─── Statistics ───");
+            System.out.printf("Remaining HP:  %d\n", finalPlayerHP);
+            System.out.printf("Total Rounds:  %d\n", engine.getRoundCounter());
         } else {
-            System.out.println("Defeated. Don't give up, you can try again!");
-            System.out.printf("Statistics: Enemies remaining: %d | Total Rounds Survived: %d\n", enemiesRemaining, engine.getRoundCounter());
+            System.out.println("\n╔══════════════════════════════════════════╗");
+            System.out.println(  "║                 DEFEATED                 ║");
+            System.out.println(  "╚══════════════════════════════════════════╝");
+            System.out.println("\nDon't give up! You can try again!\n");
+            System.out.println("─── Statistics ───");
+            System.out.printf("Enemies Remaining:     %d\n", enemiesRemaining);
+            System.out.printf("Total Rounds Survived: %d\n", engine.getRoundCounter());
         }
-
-        System.out.println("========================================\n");
+        System.out.println("────────────────────────────────────────────\n");
     }
 
     public IAction inputPlayerAction(Player player) {
         displayEnemiesInField();
         displayPlayerStatus(player);
         
-        System.out.println("\n=========== IT IS YOUR TURN ===========");
-        System.out.println("1. Basic Attack");
-        System.out.println("2. Defend");
-        System.out.println("3. Use Item");
-        System.out.println("4. Special Skill");
+        System.out.println("\n┌──────────────────────────────────────────┐");
+        System.out.println(  "│                YOUR TURN                 │");
+        System.out.println(  "└──────────────────────────────────────────┘");
+        System.out.println("\n[1] Basic Attack");
+        System.out.println("[2] Defend");
+        System.out.println("[3] Use Item");
+        System.out.println("[4] Special Skill");
         
         while (true) {
             if (player.getSkillCooldown() > 0) {
-                System.out.println("\nYour Special Skill is currently on cooldown for " + player.getSkillCooldown() + " more rounds.");
+                System.out.println("\n[!] Special Skill on cooldown: " + player.getSkillCooldown() + " rounds remaining");
             } else {
-                System.out.println("\nYour Special Skill is ready to use!");
+                System.out.println("\n-> Special Skill is ready!");
             }
 
             // player input validation
-            System.out.print("Choose your action: ");
+            System.out.print("\n-> Choose action (1-4): ");
             while (!sc.hasNextInt()) {
-                System.out.println("Invalid selection. Please try again!\n");
-                System.out.print("Choose your action: ");
+                System.out.println("[!] Invalid input. Please enter a number.\n");
+                System.out.print("-> Choose action (1-4): ");
                 sc.next();
             }
             int choice = sc.nextInt();
@@ -278,7 +296,7 @@ public class UserInterface {
                 case 3:
                     ArrayList<Item> inventory = player.getInventory();
                     if (inventory.isEmpty()) {
-                        System.out.println("You have no items left! Please choose a different action.");
+                        System.out.println("[!] No items remaining! Choose a different action.");
                         continue;
                     }
 
@@ -286,19 +304,19 @@ public class UserInterface {
 
                     int itemUseSelectIndex = -1;
                     do {
-                        System.out.print("\nSelect an item to use: ");
+                        System.out.print("\n-> Select item (1-" + inventory.size() + "): ");
                         while (!sc.hasNextInt()) {
-                            System.out.println("\nInvalid selection. Please try again!\n");
-                            System.out.print("Select an item to use: ");
+                            System.out.println("[!] Invalid input. Please enter a number.\n");
+                            System.out.print("-> Select item (1-" + inventory.size() + "): ");
                             sc.next();
                         }
                         
                         itemUseSelectIndex = sc.nextInt();
 
                         if (itemUseSelectIndex < 1 || itemUseSelectIndex > inventory.size())
-                            System.out.println("\nInvalid selection. Please try again!");
+                            System.out.println("[!] Invalid selection.");
                         else {
-                            System.out.println("You have chosen to use: " + inventory.get(itemUseSelectIndex - 1).getItemName());
+                            System.out.println("-> Using: " + inventory.get(itemUseSelectIndex - 1).getItemName());
                         }
                     } while (itemUseSelectIndex < 1 || itemUseSelectIndex > inventory.size());
 
@@ -306,42 +324,51 @@ public class UserInterface {
                 case 4:
                     // We default to the basic attack if the player's skill is still on cooldown
                     if (player.getSkillCooldown() > 0) {
-                        System.out.println("Your Special Skill is currently on cooldown for " + player.getSkillCooldown() + " more rounds! Please choose a different action.");
+                        System.out.println("[!] Special Skill on cooldown: " + player.getSkillCooldown() + " rounds remaining!");
                         continue;
                     }
 
                     return new ActionSpecialSkill();
                 default:
-                    System.out.println("Invalid choice. Please try again!");
+                    System.out.println("[!] Invalid choice. Please select 1-4.");
             }
         }
     }
 
     public void displayEnemiesInField() {
-            System.out.println("\n=========== ENEMIES IN THE FIELD ===========\n");
+            System.out.println("\n┌──────────────────────────────────────────┐");
+            System.out.println(  "│           ENEMIES IN THE FIELD           │");
+            System.out.println(  "└──────────────────────────────────────────┘\n");
             int count = 1;
             for (Combatant c : engine.getActiveCombatants()) {
                 if (c instanceof Enemy && c.isAlive()) {
-                    System.out.println(count + ". " + c.getCombatantName() + " | HP: " + c.getCurrentHP() + "/" + c.getMaxHP());
+                    System.out.printf("[%d] %-12s │ HP: %3d/%3d\n", count, c.getCombatantName(), c.getCurrentHP(), c.getMaxHP());
                     displayStatusEffects(c);
                     count++;
                 }
             }
-            System.out.println("============================================");
+            System.out.println("────────────────────────────────────────────");
     }
 
     public void displayPlayerStatus(Player player) {
-        System.out.println("\n=========== YOUR STATUS ===========\n");
-        System.out.println("HP: " + player.getCurrentHP() + "/" + player.getMaxHP());
-        System.out.println("Attack: " + player.getAttack());
-        System.out.println("Defense: " + player.getDefense());
-        System.out.println("Speed: " + player.getSpeed());
-        System.out.println("Inventory:");
-        for (Item item : player.getInventory()) {
-            System.out.println("- " + item.getItemName());
+        System.out.println("\n┌──────────────────────────────────────────┐");
+        System.out.println(  "│               YOUR STATUS                │");
+        System.out.println(  "└──────────────────────────────────────────┘\n");
+        System.out.printf("HP:      %3d/%3d\n", player.getCurrentHP(), player.getMaxHP());
+        System.out.printf("Attack:  %3d\n", player.getAttack());
+        System.out.printf("Defense: %3d\n", player.getDefense());
+        System.out.printf("Speed:   %3d\n\n", player.getSpeed());
+        System.out.println("─── Inventory ───");
+        if (player.getInventory().isEmpty()) {
+            System.out.println("(empty)");
+        } else {
+            for (Item item : player.getInventory()) {
+                System.out.println("->" + item.getItemName());
+            }
         }
+        System.out.println();
         displayStatusEffects(player);
-        System.out.println("===================================");
+        System.out.println("────────────────────────────────────────────");
     }
 
     public Combatant inputPlayerTarget() {
@@ -355,18 +382,18 @@ public class UserInterface {
 
         int targetIndex = 0;
         do {
-            System.out.print("\nSelect a target: ");
+            System.out.print("\n-> Select target (1-" + enemies.size() + "): ");
             while (!sc.hasNextInt()) {
-                System.out.println("\nInvalid selection. Please try again!\n");
-                System.out.print("Select a target: ");
+                System.out.println("[!] Invalid input. Please enter a number.\n");
+                System.out.print("-> Select target (1-" + enemies.size() + "): ");
                 sc.next();
             }
             targetIndex = sc.nextInt();
 
             if (targetIndex < 1 || targetIndex > enemies.size())
-                System.out.println("\nInvalid selection. Please try again!");
+                System.out.println("[!] Invalid selection.");
             else {
-                System.out.println("You have chosen to attack: " + enemies.get(targetIndex - 1).getCombatantName());
+                System.out.println("-> Target: " + enemies.get(targetIndex - 1).getCombatantName());
             }
         } while (targetIndex < 1 || targetIndex > enemies.size());
 
@@ -376,79 +403,87 @@ public class UserInterface {
     }
 
     public void printRoundSummary(int currentRound) {
-        System.out.printf("\n=========== Round %d ===========\n\n", currentRound);
+        System.out.println(  "\n┌──────────────────────────────────────────┐");
+        System.out.printf("│                ROUND %-3d                 │\n", currentRound);
+        System.out.println(    "└──────────────────────────────────────────┘\n");
         for (Combatant c : engine.getActiveCombatants()) {
             if (c instanceof Player && c.isAlive()) {
-                System.out.printf("PLAYER: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
+                System.out.printf("[PLAYER] %-12s │ HP: %3d\n", c.getCombatantName(), c.getCurrentHP());
                 displayStatusEffects(c);
 
             } else if (c instanceof Enemy && c.isAlive()) {
-                System.out.printf("ENEMY: %s, HP: %d\n", c.getCombatantName(), c.getCurrentHP());
+                System.out.printf("[ENEMY]  %-12s │ HP: %3d\n", c.getCombatantName(), c.getCurrentHP());
                 displayStatusEffects(c);
 
             } else {
-                System.out.printf("DEAD: %s\n", c.getCombatantName());
+                System.out.printf("[DEAD]   %-12s\n", c.getCombatantName());
             }
         }
-        System.out.println("\n===============================");
+        System.out.println("\n────────────────────────────────────────────");
     }
 
     public void displayPlayerInventory(Player player) {
-        System.out.println("\n=========== YOUR INVENTORY ===========\n");
+        System.out.println("\n─── Your Inventory ───\n");
 
         ArrayList<Item> inventory = player.getInventory();
         for (int i = 0; i < inventory.size(); i++) {
-            System.out.println((i + 1) + ". " + inventory.get(i).getItemName());
+            System.out.println("[" + (i + 1) + "] " + inventory.get(i).getItemName());
         }
 
-        System.out.println("\n====================================");
+        System.out.println();
     }
 
     public void displayTurnOrder(ArrayList<Combatant> turnOrder) {
-        System.out.println("\n=========== TURN ORDER ===========\n");
+        System.out.println("\n┌──────────────────────────────────────────┐");
+        System.out.println(  "│                TURN ORDER                │");
+        System.out.println(  "└──────────────────────────────────────────┘\n");
 
         for (int i = 0, count = 1; i < turnOrder.size(); i++) {
             Combatant c = turnOrder.get(i);
 
             if (c.isAlive()) {
-                System.out.println((count) + ". " + c.getCombatantName() + " (Speed: " + c.getSpeed() + ")");
+                System.out.printf("[%d] %-15s (Speed: %d)\n", count, c.getCombatantName(), c.getSpeed());
                 count++;
             }
         }
-        System.out.println("\n================================");
+        System.out.println("\n────────────────────────────────────────────");
     }
 
     public int checkIfRestartGame() {
-        System.out.println("\n=========== RESTART GAME? ===========\n");
-        System.out.println("1. Replay with same settings");
-        System.out.println("2. Start a new game");
-        System.out.println("3. Exit");
+        System.out.println("\n┌──────────────────────────────────────────┐");
+        System.out.println(  "│               PLAY AGAIN?                │");
+        System.out.println(  "└──────────────────────────────────────────┘\n");
+        System.out.println("[1] Replay with same settings");
+        System.out.println("[2] Start a new game");
+        System.out.println("[3] Exit");
 
-        System.out.print("\nSelect an option: ");
+        System.out.print("\n-> Select option (1-3): ");
         while (!sc.hasNext()) {
-            System.out.println("\nInvalid selection. Please try again!\n");
-            System.out.print("Select an option: ");
+            System.out.println("[!] Invalid input. Please enter a number.\n");
+            System.out.print("-> Select option (1-3): ");
             sc.next();
         }
         int restart = sc.nextInt();
 
         if (restart < 1 || restart > 3) {
-            System.out.println("\nInvalid selection. Please try again!\n");
+            System.out.println("[!] Invalid selection. Please choose 1, 2, or 3.\n");
             return checkIfRestartGame();
         }
 
         switch (restart) {
             case 1:
-                System.out.println("Restarting the game...\n");
+                System.out.println("\n-> Restarting with same settings...\n");
                 return 1;
             case 2:
-                System.out.println("Starting a new game...\n");
+                System.out.println("\n-> Starting new game...\n");
                 return 2;
             case 3:
-                System.out.println("Thank you for playing! Goodbye!");
+                System.out.println("\n══════════════════════════════════════════");
+                System.out.println("      Thank you for playing! Goodbye!");
+                System.out.println("══════════════════════════════════════════\n");
                 return 3;
             default:
-                System.out.println("Invalid input. Please enter 1, 2, or 3.");
+                System.out.println("[!] Invalid selection.");
         }
 
         return 3;
@@ -456,14 +491,14 @@ public class UserInterface {
 
     public void displayStatusEffects(Combatant c) {
         // We show the active status effects if its not empty
-        if (c instanceof Player && c.getActiveEffects().isEmpty()) { // Show for player status if no active effects
-            System.out.println("You have no active status effects.\n");
+        if (c instanceof Player && c.getActiveEffects().isEmpty()) {
+            System.out.println("Status: None\n");
         } else if (c instanceof Enemy && c.getActiveEffects().isEmpty()) {
-            System.out.println("The enemy has no active status effects.\n");
-        } else { // This is the default case for both player and enemy
-            System.out.print("Active Status Effects: ");
+            System.out.println("Status: None\n");
+        } else {
+            System.out.print("Status: ");
             for (IStatusEffect effect : c.getActiveEffects()) {
-                System.out.printf("[" + effect.getEffectName() + " (" + effect.getEffectDuration() + ")]");
+                System.out.printf("[%s (%d)] ", effect.getEffectName(), effect.getEffectDuration());
             }
             System.out.println("\n");
         }
@@ -500,6 +535,8 @@ public class UserInterface {
         };
         engine.setDifficulty(resetDiff);
 
-        System.out.println("Game reset successfully with your original settings! Good luck and have fun!\n\n");
+        System.out.println("\n╔══════════════════════════════════════════╗");
+        System.out.println(  "║    Game reset with original settings!    ║");
+        System.out.println(  "╚══════════════════════════════════════════╝\n");
     }
 }
