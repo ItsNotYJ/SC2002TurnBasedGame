@@ -1,0 +1,33 @@
+# Java build output
+*.class
+*.jar
+*.war
+*.ear
+
+# JVM crash logs
+hs_err_pid*
+
+# Build directories
+bin/
+out/
+target/
+build/
+
+# Logs
+*.log
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
