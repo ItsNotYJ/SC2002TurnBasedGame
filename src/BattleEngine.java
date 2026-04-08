@@ -45,6 +45,11 @@ public class BattleEngine {
             return;
         }
 
+        roundCounter = 0;
+        if (userInterface != null) {
+            userInterface.resetBattleLog();
+        }
+
         // Every do-while loop is a full rotation of combatants (Every round)
         do {
             // First we determine the order of combatants based on their speed stat (SpeedTurnOrder)
