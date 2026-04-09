@@ -408,6 +408,38 @@ public class UserInterface {
     }
 
     public void printRoundSummary(int currentRound) {
+        System.out.println(  "\n┌──────────────────────────────────────────┐");
+        System.out.println(  "│                 Round " + currentRound + "                  │");
+        System.out.println(  "└──────────────────────────────────────────┘\n");
+
+        // Here we print the list of combatants regardless of whether or not they are alive or dead
+        for (Combatant c : engine.getActiveCombatants()) {
+            // If its the player, we also show their special skill cooldown duration left
+            if (!c.isAlive()) {
+                System.out.printf("[DEAD] : %s\n | HP: %d", c.getCombatantName(), c.getCurrentHP());
+            } else if (c instanceof Player p && c.isAlive()) {
+                System.out.printf("[PLAYER]   : %s | HP : %d\n", c.getCombatantName(), c.getCurrentHP());
+                System.out.printf("[Skill CD] : %d turns remaining\n", p.getSkillCooldown());
+            } else {
+                System.out.printf("[ALIVE] : %s | HP : %d\n", c.getCombatantName(), c.getCurrentHP());
+            }
+
+            // We also show if each combatant has any active status effects only if they are alive
+            if (c.getActiveEffects().isEmpty() && c.isAlive())
+                System.out.println(" Status : None");
+            else if (!c.getActiveEffects().isEmpty() && c.isAlive()) {
+                System.out.print(" Status : ");
+                for (IStatusEffect effect : c.getActiveEffects()) {
+                    System.out.print(effect.getEffectName() + " ");
+                }
+                System.out.println();
+            } else {
+                System.out.println();
+            }
+            System.out.println();
+        }
+
+        // Save round summary to display at the end of the game
         String roundSummary = buildRoundSummaryString(currentRound);
         battleLog.add(roundSummary);
     }
@@ -417,7 +449,7 @@ public class UserInterface {
     }
 
     public void printBattleLog() {
-        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println(  "┌──────────────────────────────────────────┐");
         System.out.println(  "│                BATTLE LOG                │");
         System.out.println(  "└──────────────────────────────────────────┘\n");
 
