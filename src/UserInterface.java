@@ -248,6 +248,7 @@ public class UserInterface {
             System.out.println(  "╚══════════════════════════════════════════╝");
             System.out.println("\nCongratulations! You defeated all enemies!\n");
             System.out.println("────────────────────────────────────────────");
+            System.out.println(" ");
             System.out.println("─── Statistics ───");
             System.out.printf("Remaining HP:  %d\n", finalPlayerHP);
             System.out.printf("Total Rounds:  %d\n", engine.getRoundCounter());
@@ -257,6 +258,7 @@ public class UserInterface {
             System.out.println(  "╚══════════════════════════════════════════╝");
             System.out.println("\nDon't give up! You can try again!\n");
             System.out.println("────────────────────────────────────────────");
+            System.out.println(" ");
             System.out.println("─── Statistics ───");
             System.out.printf("Enemies Remaining:     %d\n", enemiesRemaining);
             System.out.printf("Total Rounds Survived: %d\n", engine.getRoundCounter());
