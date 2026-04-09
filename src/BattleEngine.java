@@ -101,8 +101,8 @@ public class BattleEngine {
                             playerAction.executeTurn(c, target, this);
                         }
                         
-                        // We decrease the cooldown of the player's skills by 1 at the end of their turn if they are on cooldown
-                        if (c instanceof Player p && c.getSkillCooldown() > 0) {
+                        // Decrease cooldown at end of turn, but not on the turn the skill was just used
+                        if (c instanceof Player p && c.getSkillCooldown() > 0 && !(playerAction instanceof ActionSpecialSkill)) {
                             p.decreaseCooldown();
                         }
                     }

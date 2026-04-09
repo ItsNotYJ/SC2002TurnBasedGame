@@ -498,7 +498,7 @@ public class UserInterface {
         } else {
             System.out.print("Status: ");
             for (IStatusEffect effect : c.getActiveEffects()) {
-                System.out.printf("[%s (%d)] ", effect.getEffectName(), effect.getEffectDuration());
+                System.out.printf("[%s (%d) turns until effect diminishes] ", effect.getEffectName(), effect.getEffectDuration());
             }
             System.out.println("\n");
         }
