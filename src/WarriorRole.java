@@ -22,6 +22,5 @@ public class WarriorRole extends PlayerRole {
 
         enemy.setStatusEffect(new EffectStun());
 
-        System.out.println(enemy.getCombatantName() + " is stunned!");
     }
 }

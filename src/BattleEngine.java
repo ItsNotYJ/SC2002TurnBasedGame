@@ -45,6 +45,11 @@ public class BattleEngine {
             return;
         }
 
+        roundCounter = 0;
+        if (userInterface != null) {
+            userInterface.resetBattleLog();
+        }
+
         // Every do-while loop is a full rotation of combatants (Every round)
         do {
             // First we determine the order of combatants based on their speed stat (SpeedTurnOrder)
@@ -59,8 +64,13 @@ public class BattleEngine {
                 c.updateStatusEffect();
             }
 
-            // Loop through each combatant to execute their turns
-            for (Combatant c : activeCombatants) {
+            // Removedead
+            Enemy.removeDeadCombatants(activeCombatants);
+            
+            //Loop through each combatant to execute their turns
+            for (int i = 0; i < activeCombatants.size(); i++) {
+                Combatant c = activeCombatants.get(i);
+
                 // First check if combatant's turn is skipped
                 if (c.isTurnSkipped())
                     continue;
@@ -106,6 +116,9 @@ public class BattleEngine {
                             p.decreaseCooldown();
                         }
                     }
+
+                // Removedead
+                Enemy.removeDeadCombatants(activeCombatants);
 
                 // We check the game ending condition after each action before moving to the next combatant
                 WinCondition isWin = checkGameEndingCondition();
