@@ -472,7 +472,9 @@ public class UserInterface {
 
         for (Combatant c : engine.getActiveCombatants()) {
             if (c instanceof Player) {
-                summary.append(String.format("PLAYER %s HP:%d/%d", c.getCombatantName(), c.getCurrentHP(), c.getMaxHP()));
+                summary.append(String.format("PLAYER %s HP:%s/%s", c.getCombatantName(),
+                    String.format("%3d", c.getCurrentHP()),
+                    String.format("%3d", c.getMaxHP())));
                 summary.append(" | ");
                 break;
             }
@@ -484,7 +486,7 @@ public class UserInterface {
             if (c instanceof Enemy) {
                 hasEnemy = true;
                 if (c.isAlive()) {
-                    summary.append(String.format("%s(%d/%d) ", c.getCombatantName(), c.getCurrentHP(), c.getMaxHP()));
+                    summary.append(String.format("%s(%3d/%3d) ", c.getCombatantName(), c.getCurrentHP(), c.getMaxHP()));
                 } else {
                     summary.append(String.format("%s(DEAD) ", c.getCombatantName()));
                 }
