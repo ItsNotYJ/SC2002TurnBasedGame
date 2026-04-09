@@ -214,6 +214,30 @@ public class UserInterface {
         return diffSelect;
     }
 
+    /**
+     * Text-based health bar eg.:  [████████░░░░░░░░]  75/100
+     * Bar is BAR_LENGTH characters wide and colour-coded:
+     *   >= 50% HP  →  '█' (full block)
+     *   20–49% HP  →  '▓' (dark shade, visual warning)
+     *   <  20% HP  →  '▒' (medium shade, critical warning)
+     * Empty portion is always '░' (light shade).
+     */
+    private String buildHealthBar(int currentHP, int maxHP) {
+        final int BAR_LENGTH = 20;
+        int filled = (maxHP > 0) ? (int) Math.round((double) currentHP / maxHP * BAR_LENGTH) : 0;
+        filled = Math.max(0, Math.min(filled, BAR_LENGTH));
+
+        double ratio = (maxHP > 0) ? (double) currentHP / maxHP : 0;
+        char fillChar = (ratio >= 0.50) ? '█' : (ratio >= 0.20) ? '▓' : '▒';
+
+        StringBuilder bar = new StringBuilder("[");
+        for (int i = 0; i < BAR_LENGTH; i++) {
+            bar.append(i < filled ? fillChar : '░');
+        }
+        bar.append("]");
+        return bar.toString();
+    }
+
     public void displayBattle() {
         // Loop through engine.getActiveCombatants() and print their current status
         // e.g., Name, HP, and active status effects
@@ -222,7 +246,9 @@ public class UserInterface {
         System.out.println(  "└──────────────────────────────────────────┘\n");
 
         for (Combatant c : engine.getActiveCombatants()) {
-            System.out.printf("  %-12s │ HP: %3d/%3d\n", c.getCombatantName(), c.getCurrentHP(), c.getMaxHP());
+            System.out.printf("  %-12s │ HP: %3d/%3d  %s\n",
+                    c.getCombatantName(), c.getCurrentHP(), c.getMaxHP(),
+                    buildHealthBar(c.getCurrentHP(), c.getMaxHP()));
         }
         
         System.out.println("\n────────────────────────────────────────────");
@@ -349,7 +375,9 @@ public class UserInterface {
             int count = 1;
             for (Combatant c : engine.getActiveCombatants()) {
                 if (c instanceof Enemy && c.isAlive()) {
-                    System.out.printf("[%d] %-12s │ HP: %3d/%3d\n", count, c.getCombatantName(), c.getCurrentHP(), c.getMaxHP());
+                    System.out.printf("[%d] %-12s │ HP: %3d/%3d  %s\n",
+                            count, c.getCombatantName(), c.getCurrentHP(), c.getMaxHP(),
+                            buildHealthBar(c.getCurrentHP(), c.getMaxHP()));
                     displayStatusEffects(c);
                     count++;
                 }
@@ -361,7 +389,9 @@ public class UserInterface {
         System.out.println("\n┌──────────────────────────────────────────┐");
         System.out.println(  "│               YOUR STATUS                │");
         System.out.println(  "└──────────────────────────────────────────┘\n");
-        System.out.printf("HP:      %3d/%3d\n", player.getCurrentHP(), player.getMaxHP());
+        System.out.printf("HP:      %3d/%3d  %s\n",
+                player.getCurrentHP(), player.getMaxHP(),
+                buildHealthBar(player.getCurrentHP(), player.getMaxHP()));
         System.out.printf("Attack:  %3d\n", player.getAttack());
         System.out.printf("Defense: %3d\n", player.getDefense());
         System.out.printf("Speed:   %3d\n\n", player.getSpeed());
@@ -420,10 +450,14 @@ public class UserInterface {
             if (!c.isAlive()) {
                 System.out.printf("[DEAD] : %s\n | HP: %d", c.getCombatantName(), c.getCurrentHP());
             } else if (c instanceof Player p && c.isAlive()) {
-                System.out.printf("[PLAYER]   : %s | HP : %d\n", c.getCombatantName(), c.getCurrentHP());
+                System.out.printf("[PLAYER]   : %s | HP : %d/%d  %s\n",
+                        c.getCombatantName(), c.getCurrentHP(), c.getMaxHP(),
+                        buildHealthBar(c.getCurrentHP(), c.getMaxHP()));
                 System.out.printf("[Skill CD] : %d turns remaining\n", p.getSkillCooldown());
             } else {
-                System.out.printf("[ALIVE] : %s | HP : %d\n", c.getCombatantName(), c.getCurrentHP());
+                System.out.printf("[ALIVE] : %s | HP : %d/%d  %s\n",
+                        c.getCombatantName(), c.getCurrentHP(), c.getMaxHP(),
+                        buildHealthBar(c.getCurrentHP(), c.getMaxHP()));
             }
 
             // We also show if each combatant has any active status effects only if they are alive
