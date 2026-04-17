@@ -2,9 +2,10 @@ public class ItemPotion extends Item {
 
     public ItemPotion() { super("Potion"); }
 
-    // TODO: Add code
     @Override
-    public void useItem(Combatant user, Combatant target, BattleEngine engine) {
-
+    public void useItem(Combatant user, Combatant target, BattleEngine engine){
+        // call the heal method from combatant class
+        user.healHP(100);
+        System.out.println("\n" + user.getCombatantName() + " used a Potion and recovered 100 HP!");
     }
 }

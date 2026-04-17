@@ -1,8 +1,11 @@
 public class ActionBasicAttack implements IAction {
-    public ActionBasicAttack() { }
-
     @Override
-    public void execute(Combatant user, Combatant target, BattleEngine engine) {
+    public IAction executeTurn(Combatant user, Combatant target, BattleEngine engine) {
+        int damage = Math.max(0, user.getAttack() - target.getDefense());
+        target.takeDamage(damage);
 
+        System.out.println("\nYou have dealt " + damage + " damage to " + target.getCombatantName() + "!");
+        
+        return this;
     }
 }

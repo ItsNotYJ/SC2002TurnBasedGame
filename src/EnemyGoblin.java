@@ -1,5 +1,5 @@
 public class EnemyGoblin extends Enemy {
-    public EnemyGoblin() {
-        super("Goblin", 35, 15, 25, 55, new EnemyBasicAttack());
+    public EnemyGoblin(String name) {
+        super(name, 35, 15, 25, 55);
     }
 }

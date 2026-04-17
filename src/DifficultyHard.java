@@ -2,17 +2,17 @@ import java.util.ArrayList;
 
 public class DifficultyHard extends Difficulty {
     public DifficultyHard() {
-        this.difficultyName = "Medium";
+        this.setDifficultyName("Hard");
 
         ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-        enemies.add(new EnemyGoblin());
-        enemies.add(new EnemyGoblin());
-        this.enemiesInDifficulty = enemies;
+        enemies.add(new EnemyGoblin("Goblin A"));
+        enemies.add(new EnemyGoblin("Goblin B"));
+        this.setEnemiesInDifficulty(enemies);
 
         ArrayList<Enemy> backupEnemies = new ArrayList<>();
-        backupEnemies.add(new EnemyWolf());
-        backupEnemies.add(new EnemyWolf());
-        backupEnemies.add(new EnemyGoblin());
-        this.backupEnemies = backupEnemies;
+        backupEnemies.add(new EnemyWolf("Wolf A"));
+        backupEnemies.add(new EnemyWolf("Wolf B"));
+        backupEnemies.add(new EnemyGoblin("Goblin C"));
+        this.setBackupEnemies(backupEnemies);
     }
 }

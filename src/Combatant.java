@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
-public abstract class Combatant implements IStatusEffect, IAction {
-    private String combatantName;
+public abstract class Combatant {
+    private final String combatantName;
     private int currentHP;
     private int maxHP;
     private int attack;
@@ -12,7 +12,7 @@ public abstract class Combatant implements IStatusEffect, IAction {
     private ArrayList<IStatusEffect> activeEffects;
 
     public Combatant(String combatantName, int speed, int defense, int attack, int maxHP) {
-        this.activeEffects = new ArrayList<IStatusEffect>();
+        this.activeEffects = new ArrayList<>();
         this.isTurnSkipped = false;
         this.skillCooldown = 0;
 
@@ -27,6 +27,8 @@ public abstract class Combatant implements IStatusEffect, IAction {
     public String getCombatantName() {
         return combatantName;
     }
+
+    public ArrayList<IStatusEffect> getActiveEffects() { return activeEffects; }
 
     public int getCurrentHP() {
         return currentHP;
@@ -60,26 +62,45 @@ public abstract class Combatant implements IStatusEffect, IAction {
         this.defense = defense;
     }
 
-    // TODO: Add method code after initializing files
     public void setStatusEffect(IStatusEffect effectInterface) {
-        this.activeEffects.add(null);
+        activeEffects.add(effectInterface);
+        effectInterface.applyEffect(this);
     }
 
     public void setSkipTurn(boolean skipped) {
-        this.isTurnSkipped = skipped;
+        isTurnSkipped = skipped;
     }
 
-    // TODO: Add method code after initializing files
     public void updateStatusEffect() {
+        ArrayList<IStatusEffect> toRemove = new ArrayList<>();
 
+        for (IStatusEffect effect : activeEffects) {
+            // Decrease duration first, then check if expired
+            effect.decreaseDuration();
+
+            if (effect.isEffectExpired()) {
+                effect.removeEffect(this);
+                toRemove.add(effect);
+
+                System.out.println(effect.getEffectName() + " has expired for " + this.getCombatantName() + "!");
+            }
+        }
+
+        activeEffects.removeAll(toRemove);
     }
 
     public void takeDamage(int damageAmt) {
-
+        currentHP -= damageAmt;
+        if (currentHP < 0) {
+            currentHP = 0;
+        }
     }
 
     public void healHP(int healAmt) {
-
+        currentHP += healAmt;
+        if (currentHP > maxHP) {
+            currentHP = maxHP;
+        }
     }
 
     public boolean isAlive() {
@@ -90,12 +111,12 @@ public abstract class Combatant implements IStatusEffect, IAction {
         return isTurnSkipped;
     }
 
-    // TODO: Both cooldown methods from interface?
     public void decreaseCooldown() {
-
+        if (skillCooldown > 0)
+            skillCooldown--;
     }
 
     public void resetCooldown() {
-
+        skillCooldown = 3;
     }
 }

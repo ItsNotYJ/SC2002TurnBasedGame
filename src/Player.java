@@ -26,35 +26,17 @@ public class Player extends Combatant {
         inventory.remove(item); // Might wanna test this if it works
     }
 
-    // TODO: To implement based on given player role
+    // Mainly to use for the Power Stone item
+    public void triggerSpecialSkill(Combatant target, BattleEngine engine) {
+        this.selectedRole.doSpecialSkill(this, target, engine);
+    }
+
     public void useSpecialSkill(Combatant enemy, BattleEngine engine) {
-
-    }
-
-    // IAction Method Overriding
-    @Override
-    public void execute(Combatant user, Combatant target, BattleEngine engine) {
-
-    }
-
-    // IStatusEffect Method Overriding
-    @Override
-    public void applyEffect(Combatant target) {
-
-    }
-
-    @Override
-    public void removeEffect(Combatant target) {
-
-    }
-
-    @Override
-    public int getEffectDuration() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEffectExpired() {
-        return false;
+        if (this.getSkillCooldown() == 0) {
+            this.selectedRole.doSpecialSkill(this, enemy, engine);
+            this.resetCooldown();
+        } else {
+            System.out.println("\nYour special skill is on cooldown for " + this.getSkillCooldown() + " more turns!");
+        }
     }
 }
