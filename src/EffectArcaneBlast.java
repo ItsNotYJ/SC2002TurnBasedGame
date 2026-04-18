@@ -10,7 +10,7 @@ public class EffectArcaneBlast implements IStatusEffect {
     @Override
     public void applyEffect(Combatant target) {
         target.setAttack(target.getAttack() + 10);
-        System.out.println(target.getCombatantName() + " surges with arcane energy! Attack boosted by 10.");
+        System.out.println(target.getCombatantName() + " surges with arcane energy!");
     }
 
     @Override

@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+
 public class WizardRole extends PlayerRole {
 
     public WizardRole() {
@@ -8,19 +10,27 @@ public class WizardRole extends PlayerRole {
     @Override
     public void doSpecialSkill(Player player, Combatant enemy, BattleEngine engine) {
         System.out.println("\n" + player.getCombatantName() + " casts Arcane Blast to all enemies!");
-        
+
+        // We fix the attack at the start of the arcane blast so that it doesn't increase mid attack
+        int castAttack = player.getAttack();
+        ArrayList<Enemy> defeatedEnemies = new ArrayList<>();
+
         for (Combatant c : engine.getActiveCombatants()) {
             if (c instanceof Enemy e && e.isAlive()) {
-                int effectiveDamage = Math.max(0, player.getAttack() - e.getDefense());
+                int effectiveDamage = Math.max(0, castAttack - e.getDefense());
                 e.takeDamage(effectiveDamage);
                 System.out.println("\nArcane Blast hits " + e.getCombatantName() + " for " + effectiveDamage + " damage!");
 
-                // If the wizard kills an enemy using his special skill, we add 10 attack to his stats permanantly
                 if (!e.isAlive()) {
-                    player.setStatusEffect(new EffectArcaneBlast());
-                    System.out.println("\n" + e.getCombatantName() + " was defeated! Wizard's attack increases by 10!");
+                    defeatedEnemies.add(e);
                 }
             }
+        }
+
+        // Only after the skill is done, we show the increase and defeated enemies
+        for (Enemy defeatedEnemy : defeatedEnemies) {
+            player.setStatusEffect(new EffectArcaneBlast());
+            System.out.println("\n" + defeatedEnemy.getCombatantName() + " was defeated! Wizard's attack increases by 10!");
         }
     }
 }
