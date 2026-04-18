@@ -26,6 +26,9 @@ public class UserInterface {
         EnemyGoblin displayGoblin = new EnemyGoblin("Goblin");
         EnemyWolf displayWolf = new EnemyWolf("Wolf");
 
+        // We reset all the initial values based on their selection regardless of whether the player is new or restarting
+        engine.resetBattleState();
+
         System.out.println("╔══════════════════════════════════════════╗");
         System.out.println("║          TURN-BASED COMBAT GAME          ║");
         System.out.println("╚══════════════════════════════════════════╝");
@@ -57,7 +60,7 @@ public class UserInterface {
 
         // We save the original settings for when the player wants to replay the game with the same settings
         this.originalRoleSelect = roleSelect;
-        this.originalItems = selectedItems;
+        this.originalItems = copyInventoryItems(selectedItems);
         this.originalDiffSelect = diffSelect;
 
         // End init
@@ -278,6 +281,19 @@ public class UserInterface {
             System.out.println("─── Statistics ───");
             System.out.printf("Remaining HP:  %d\n", finalPlayerHP);
             System.out.printf("Total Rounds:  %d\n", engine.getRoundCounter());
+            System.out.println("Remaining Items: ");
+            for (Combatant c : engine.getActiveCombatants()) {
+                if (c instanceof Player p) {
+                    if (p.getInventory().isEmpty()) {
+                        System.out.println("-> No items remaining!");
+                        break;
+                    } else {
+                        for (Item item : p.getInventory()) {
+                            System.out.println("-> " + item.getItemName());
+                        }
+                    }
+                }
+            }
         } else {
             System.out.println("\n╔══════════════════════════════════════════╗");
             System.out.println(  "║                 DEFEATED                 ║");
@@ -298,7 +314,7 @@ public class UserInterface {
         displayPlayerStatus(player);
         
         System.out.println("\n┌──────────────────────────────────────────┐");
-        System.out.println(  "│                YOUR TURN                 │");
+        System.out.println(  "│            YOUR TURN - ROUND " + (engine.getRoundCounter() + 1) + "           │");
         System.out.println(  "└──────────────────────────────────────────┘");
         System.out.println("\n[1] Basic Attack");
         System.out.println("[2] Defend");
@@ -441,7 +457,7 @@ public class UserInterface {
 
     public void printRoundSummary(int currentRound) {
         System.out.println(  "\n┌──────────────────────────────────────────┐");
-        System.out.println(  "│                 Round " + currentRound + "                  │");
+        System.out.println(  "│          End of Round " + currentRound + "                  │");
         System.out.println(  "└──────────────────────────────────────────┘\n");
 
         // Here we print the list of combatants regardless of whether or not they are alive or dead
@@ -453,7 +469,7 @@ public class UserInterface {
                 System.out.printf("[PLAYER]   : %s | HP : %d/%d  %s\n",
                         c.getCombatantName(), c.getCurrentHP(), c.getMaxHP(),
                         buildHealthBar(c.getCurrentHP(), c.getMaxHP()));
-                System.out.printf("[Skill CD] : %d turns remaining\n", p.getSkillCooldown());
+                System.out.printf("[Skill CD] : %d turns remaining\n", (p.getSkillCooldown()));
             } else {
                 System.out.printf("[ALIVE] : %s | HP : %d/%d  %s\n",
                         c.getCombatantName(), c.getCurrentHP(), c.getMaxHP(),
@@ -621,17 +637,20 @@ public class UserInterface {
 
     public void resetGame() {
         // We reset the game by reusing the original settings that the player chose during init
+        engine.resetBattleState();
+
         Player resetPlayer = null;
         switch (originalRoleSelect) {
             case 1:
-                resetPlayer = new Player(new WarriorRole(), originalItems);
+                resetPlayer = new Player(new WarriorRole(), copyInventoryItems(originalItems));
                 break;
             case 2:
-                resetPlayer = new Player(new WizardRole(), originalItems);
+                resetPlayer = new Player(new WizardRole(), copyInventoryItems(originalItems));
                 break;
             default:
                 break;
-        };
+        }
+
         engine.setPlayer(resetPlayer);
 
         Difficulty resetDiff = null;
@@ -647,11 +666,28 @@ public class UserInterface {
                 break;
             default:
                 break;
-        };
+        }
+
         engine.setDifficulty(resetDiff);
 
         System.out.println("\n╔══════════════════════════════════════════╗");
         System.out.println(  "║    Game reset with original settings!    ║");
         System.out.println(  "╚══════════════════════════════════════════╝\n");
+    }
+
+    private ArrayList<Item> copyInventoryItems(ArrayList<Item> items) {
+        ArrayList<Item> copiedItems = new ArrayList<>();
+
+        for (Item item : items) {
+            if (item instanceof ItemPotion) {
+                copiedItems.add(new ItemPotion());
+            } else if (item instanceof ItemPowerStone) {
+                copiedItems.add(new ItemPowerStone());
+            } else if (item instanceof ItemSmokeBomb) {
+                copiedItems.add(new ItemSmokeBomb());
+            }
+        }
+
+        return copiedItems;
     }
 }
