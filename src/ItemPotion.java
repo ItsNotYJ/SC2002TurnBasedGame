@@ -4,8 +4,16 @@ public class ItemPotion extends Item {
 
     @Override
     public void useItem(Combatant user, Combatant target, BattleEngine engine){
+        int hpBeforeHeal = user.getCurrentHP();
+
         // call the heal method from combatant class
         user.healHP(100);
-        System.out.println("\n" + user.getCombatantName() + " used a Potion and recovered 100 HP!");
+
+        int recoveredHP = user.getCurrentHP() - hpBeforeHeal;
+        if (recoveredHP > 0) {
+            System.out.println("\n" + user.getCombatantName() + " used a Potion and recovered " + recoveredHP + " HP!");
+        } else {
+            System.out.println("\n" + user.getCombatantName() + " used a Potion but is already at full HP.");
+        }
     }
 }
