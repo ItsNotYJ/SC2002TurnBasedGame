@@ -39,6 +39,14 @@ public class BattleEngine {
 
     public int getRoundCounter() { return roundCounter; }
 
+    public void resetBattleState() {
+        player = null;
+        difficulty = null;
+        activeCombatants.clear();
+        isBackupSpawned = false;
+        roundCounter = 0;
+    }
+
     public void startGame() {
         if (player == null) {
             System.out.println("ERROR! Player is not set and returned null!");
@@ -64,12 +72,13 @@ public class BattleEngine {
                 c.updateStatusEffect();
             }
 
-            // Removedead
+            // Remove dead
             Enemy.removeDeadCombatants(activeCombatants);
+
+            ArrayList<Combatant> turnOrder = new ArrayList<>(activeCombatants);
             
             //Loop through each combatant to execute their turns
-            for (int i = 0; i < activeCombatants.size(); i++) {
-                Combatant c = activeCombatants.get(i);
+            for (Combatant c : turnOrder) {
 
                 // First check if combatant's turn is skipped
                 if (c.isTurnSkipped())
@@ -111,10 +120,6 @@ public class BattleEngine {
                             playerAction.executeTurn(c, target, this);
                         }
                         
-                        // Decrease cooldown at end of turn, but not on the turn the skill was just used
-                        if (c instanceof Player p && c.getSkillCooldown() > 0 && !(playerAction instanceof ActionSpecialSkill)) {
-                            p.decreaseCooldown();
-                        }
                     }
 
                 // Removedead
@@ -128,6 +133,13 @@ public class BattleEngine {
 
             // We check if there is a need to spawn the backup enemies
             checkIfBackupSpawn();
+
+            // we decrease the skill cooldowns at the end of the round, after each completed round.
+            for (Combatant c : activeCombatants) {
+                if (c.getSkillCooldown() > 0) {
+                    c.decreaseCooldown();
+                }
+            }
 
             // Print out end of round summary
             roundCounter++;
